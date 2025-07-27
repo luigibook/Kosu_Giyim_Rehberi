@@ -3,1041 +3,1053 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tour de France: Efsanenin İzinde | Hazırlayan: Ümit Emre Erdoğan</title>
+    <title>Koşucular için Kılık Kıyafet Rehberi ve İnteraktif Kıyafet Seçim Aracı</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --tour-yellow: #F7E017;
-            --tour-blue: #002395;
-            --tour-red: #ED2939;
-            --text-dark: #1a1a1a;
-            --bg-light: #f8f9fa;
-        }
-        
         body {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
             line-height: 1.6;
         }
-        
-        h1, h2, h3, h4 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
+        .header-bg {
+            background: linear-gradient(135deg, #3498db, #8e44ad);
         }
-        
-        .author-banner {
-            background: linear-gradient(135deg, var(--tour-blue), var(--tour-red));
-            color: white;
-        }
-        
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL3RvdXItZGUtZnJhbmNlLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6ODI4fX19') no-repeat center center/cover;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .section-title {
-            border-left: 5px solid var(--tour-yellow);
+        .section-header {
+            border-left: 5px solid #3498db;
             padding-left: 15px;
         }
-        
-        .fact-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+        .card {
+            transition: all 0.3s ease;
         }
-        
-        .fact-card:hover {
+        .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        
-        .icon-circle {
-            background-color: var(--tour-yellow);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .temp-optimal {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .temp-suboptimal {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .temp-poor {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .reference {
+            font-size: 0.9rem;
+            color: #666;
             margin-bottom: 10px;
-            color: var(--text-dark);
         }
-        
-        .stage-table {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
+        .tool-container {
+            background: linear-gradient(to right, #f6f9fc, #edf2f7);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
-        .stage-table th {
-            background-color: var(--tour-blue);
-            color: white;
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
         }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .jersey {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            display: inline-block;
+            background: #4299e1;
+            cursor: pointer;
         }
-        
-        .yellow-jersey {
-            background-color: var(--tour-yellow);
-        }
-        
-        .green-jersey {
-            background-color: #1fa54b;
-        }
-        
-        .polka-jersey {
-            background-color: white;
-            background-image: radial-gradient(#ED2939 3px, transparent 4px);
-            background-size: 12px 12px;
-        }
-        
-        .white-jersey {
-            background-color: white;
-            border: 1px solid #ddd;
-        }
-        
-        .timeline {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            background-color: var(--tour-yellow);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -3px;
-        }
-        
-        .timeline-container {
-            padding: 10px 40px;
-            position: relative;
-            background-color: inherit;
-            width: 50%;
-        }
-        
-        .timeline-container::after {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            right: -12px;
-            background-color: white;
-            border: 4px solid var(--tour-yellow);
-            top: 15px;
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            z-index: 1;
+            background: #4299e1;
+            cursor: pointer;
+            border: none;
         }
-        
-        .left {
-            left: 0;
+        .result-card {
+            transition: all 0.3s ease;
+            transform: scale(0.98);
+            opacity: 0.95;
         }
-        
-        .right {
-            left: 50%;
+        .result-card.active {
+            transform: scale(1);
+            opacity: 1;
         }
-        
-        .left::before {
-            content: " ";
-            height: 0;
-            position: absolute;
-            top: 22px;
-            width: 0;
-            z-index: 1;
-            right: 30px;
-            border: medium solid white;
-            border-width: 10px 0 10px 10px;
-            border-color: transparent transparent transparent white;
-        }
-        
-        .right::before {
-            content: " ";
-            height: 0;
-            position: absolute;
-            top: 22px;
-            width: 0;
-            z-index: 1;
-            left: 30px;
-            border: medium solid white;
-            border-width: 10px 10px 10px 0;
-            border-color: transparent white transparent transparent;
-        }
-        
-        .right::after {
-            left: -13px;
-        }
-        
-        .timeline-content {
-            padding: 20px 30px;
-            background-color: white;
-            position: relative;
-            border-radius: 6px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .quote-block {
-            background-color: rgba(247, 224, 23, 0.1);
-            border-left: 5px solid var(--tour-yellow);
-        }
-        
-        .stat-highlight {
-            color: var(--tour-red);
-            font-weight: bold;
-        }
-        
-        @media screen and (max-width: 768px) {
-            .timeline::after {
-                left: 31px;
+        @media (max-width: 640px) {
+            .section-header {
+                border-left: 3px solid #3498db;
+                padding-left: 10px;
             }
-            
-            .timeline-container {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-container::before {
-                left: 60px;
-                border: medium solid white;
-                border-width: 10px 10px 10px 0;
-                border-color: transparent white transparent transparent;
-            }
-            
-            .left::after, .right::after {
-                left: 18px;
-            }
-            
-            .right {
-                left: 0%;
-            }
-        }
-        
-        .thank-you-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL3RvdXItZGUtZnJhbmNlLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6ODI4fX19') no-repeat center center/cover;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-<body>
-    <div class="author-banner py-2 px-4 text-center">
-        <span class="font-bold">Hazırlayan: Ümit Emre Erdoğan</span>
-    </div>
-
-    <header class="hero-section">
-        <div class="container mx-auto text-center p-4">
-            <h1 class="text-5xl md:text-6xl mb-4 font-bold">Tour de France</h1>
-            <h2 class="text-2xl md:text-3xl mb-6">Efsanenin İzinde</h2>
-            <p class="text-xl">Bisiklet sporunu aşan bir fenomen, bir asırlık tutku ve dayanıklılık destanı</p>
+<body class="bg-gray-50">
+    <header class="header-bg text-white py-12 mb-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-2">Koşucular için Kılık Kıyafet Rehberi</h1>
+            <p class="text-xl text-center text-gray-200">Yol Koşusu ve Trail Yarışlarında Hava Şartlarına, Mesafeye ve Tempoya Göre Optimum Performans için Giyim Kuşam Rehberi</p>
+            <p class="text-center mt-4 text-sm">Hazırlayan: Ümit Emre Erdoğan</p>
         </div>
     </header>
 
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-center items-center py-4 overflow-x-auto whitespace-nowrap">
-                <a href="#giris" class="px-4 py-2 rounded hover:bg-gray-100">Giriş</a>
-                <a href="#tarihce" class="px-4 py-2 rounded hover:bg-gray-100">Tarihçe</a>
-                <a href="#buyukluk" class="px-4 py-2 rounded hover:bg-gray-100">Organizasyon Büyüklüğü</a>
-                <a href="#efsaneler" class="px-4 py-2 rounded hover:bg-gray-100">Efsanevi Bisikletçiler</a>
-                <a href="#efor" class="px-4 py-2 rounded hover:bg-gray-100">İnsanüstü Efor</a>
-                <a href="#tur2025" class="px-4 py-2 rounded hover:bg-gray-100">Tour 2025</a>
-                <a href="#taraftar" class="px-4 py-2 rounded hover:bg-gray-100">Taraftar Deneyimi</a>
-                <a href="#skandallar" class="px-4 py-2 rounded hover:bg-gray-100">Skandallar</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container mx-auto px-4 py-8">
-        <!-- Giriş Bölümü -->
-        <section id="giris" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Bisiklet Sporunu Aşan Bir Efsane</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p class="mb-4">
-                    27 Temmuz 2025, Tour de France'ın son günü. Paris'in ünlü Champs-Élysées bulvarında, sarı mayoyu giyen bir bisikletçi, insanüstü bir çaba sonucunda dünyanın en prestijli bisiklet yarışını tamamlamaya hazırlanıyor. Ancak Tour de France, sadece bir bisiklet yarışı değil; bir kültürel fenomen, bir dayanıklılık destanı, bir ulusal gurur kaynağı ve milyonlarca insanı bir araya getiren büyülü bir şölendir.
-                </p>
-                <p>
-                    Bu yazıda, yüz yılı aşkın tarihi boyunca Fransa'nın dağlarını, vadilerini ve ovalarını kaplayan bu muhteşem organizasyonu tüm yönleriyle keşfedeceğiz. Bisiklet sporunu bilmeseniz bile, Tour de France'ın neden dünyanın en büyük ve en zorlu spor etkinliklerinden biri olduğunu anlayacaksınız.
-                </p>
-            </div>
-        </section>
-
-        <!-- Tarihçe Bölümü -->
-        <section id="tarihce" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Bir Asırlık Macera</h2>
+    <div class="container mx-auto px-4 pb-12">
+        <!-- İnteraktif Kıyafet Seçim Aracı -->
+        <section class="bg-white rounded-lg shadow-lg p-6 mb-8 tool-container">
+            <h2 class="text-2xl font-bold mb-6 text-center text-blue-800"><i class="fas fa-tshirt mr-2"></i>İnteraktif Kıyafet Seçim Aracı</h2>
+            <p class="mb-6 text-center text-gray-600">Hava sıcaklığı, koşu tipi ve antrenman özelliklerinize göre önerilen kıyafet kombinasyonunu bulun.</p>
             
-            <div class="timeline mb-8">
-                <div class="timeline-container left">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1903 - İlk Tour de France</h3>
-                        <p>Fransız gazetesi L'Auto'nun satışlarını artırmak için düzenlenen ilk Tour de France'ı Maurice Garin kazandı. Altı etapta toplam 2,428 km pedal çevrilen yarışta, sadece 60 bisikletçi start aldı ve yalnızca 21'i bitiş çizgisini geçebildi.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container right">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1919 - Savaş Sonrası Diriliş</h3>
-                        <p>I. Dünya Savaşı'nın ardından Tour de France yeniden düzenlendi ve "Sarı Mayo" (Maillot Jaune) ilk kez Eugène Christophe tarafından giyildi. Bu mayo, yarışın lideri için bir sembol haline geldi.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container left">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1952 - Alpe d'Huez'in İlk Tırmanışı</h3>
-                        <p>Bugün Tour'un efsanevi tırmanışlarından biri olan Alpe d'Huez ilk kez rotaya dahil edildi. 21 virajlı ve 13.8 kilometrelik bu zorlu tırmanış, yarışın en ikonik noktalarından biri haline geldi.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container right">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1969-1974 - Merckx Dönemi</h3>
-                        <p>Belçikalı bisikletçi Eddy Merckx, beş kez Tour de France kazanarak bisiklet tarihinin en büyük sporcularından biri oldu. "Kannibaal" (Yamyam) lakaplı bisikletçi, üstün performansıyla rakiplerine şans tanımadı.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container left">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1989 - En Yakın Finiş</h3>
-                        <p>Yarışın tarihindeki en yakın bitiş: Greg LeMond, Laurent Fignon'u sadece 8 saniye farkla geçerek genel klasmanda lider oldu. 3,285 kilometrelik bir yarışta bu kadar küçük bir fark, hala bir rekor olarak duruyor.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container right">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">1998 - Festina Skandalı</h3>
-                        <p>Festina takımının masörünün arabasında doping maddeleri bulunmasıyla patlak veren skandal, bisiklet sporunda doping karşıtı mücadelenin dönüm noktası oldu. Tour de France'ın tarihindeki en büyük krizlerden biri yaşandı.</p>
-                    </div>
-                </div>
-                
-                <div class="timeline-container left">
-                    <div class="timeline-content">
-                        <h3 class="text-xl font-bold mb-2">2020-2025 - Pogačar Çağı</h3>
-                        <p>Sloven bisikletçi Tadej Pogačar, 2020, 2021, 2024 ve 2025 yıllarında Tour de France'ı kazanarak modern bisikletin en büyük yıldızlarından biri haline geldi. Henüz 26 yaşında dört Tour zaferi kazanan Pogačar, tüm zamanların en başarılı bisikletçileri arasına adını yazdırdı.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <p>
-                    Tour de France, 1903'ten bu yana bisiklet tutkunlarını büyülemeye devam ediyor. İlk yarıştan bu yana, iki dünya savaşı nedeniyle verilen aralar dışında her yıl düzenli olarak yapılan Tour de France, dünya sporunun en eski ve köklü organizasyonlarından biridir. Teknolojinin, bisiklet tasarımının ve spor biliminin gelişimiyle birlikte Tour de France da evrim geçirmiş, ancak asla özünü kaybetmemiştir: dayanıklılığın, stratejinin ve takım çalışmasının en üst düzeyde test edildiği üç haftalık bir mücadele.
-                </p>
-            </div>
-        </section>
-
-        <!-- Organizasyon Büyüklüğü Bölümü -->
-        <section id="buyukluk" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Devasa Bir Organizasyon</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="fact-card p-6 text-center">
-                    <div class="icon-circle mx-auto">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">4,500+</h3>
-                    <p>Organizasyonda görev alan kişi sayısı (takımlar, medya, sponsorlar, güvenlik)</p>
-                </div>
-                
-                <div class="fact-card p-6 text-center">
-                    <div class="icon-circle mx-auto">
-                        <i class="fas fa-road"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">3,500 km</h3>
-                    <p>Ortalama kat edilen toplam yol (21 etapta yaklaşık 52,500 metre tırmanış)</p>
-                </div>
-                
-                <div class="fact-card p-6 text-center">
-                    <div class="icon-circle mx-auto">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">12 Milyon</h3>
-                    <p>Yol kenarında yarışı canlı izleyen taraftar sayısı</p>
-                </div>
-                
-                <div class="fact-card p-6 text-center">
-                    <div class="icon-circle mx-auto">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2">190 Ülke</h3>
-                    <p>Tour de France'ın televizyonda canlı yayınlandığı ülke sayısı</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Hareketli Bir Şehir</h3>
-                    <p class="mb-4">
-                        Tour de France, adeta hareket halinde bir şehir gibidir. 23 gün boyunca Fransa yollarında ilerleyen bu devasa organizasyon, muazzam bir lojistik operasyonu gerektirir.
-                    </p>
-                    <ul class="list-disc pl-5 mb-4">
-                        <li>23,000 polis ve jandarma görevlendirilir</li>
-                        <li>28,000 geçici trafik işareti yerleştirilir</li>
-                        <li>210+ otelde 40,000'den fazla konaklama rezervasyonu yapılır</li>
-                        <li>160 özel tasarımlı tanıtım aracı, 600 personelle 10-12 km'lik bir konvoy oluşturur</li>
-                        <li>Her bir bisikletçi için ortalama 5-6 bisiklet ve 20'den fazla jant hazır bulundurulur</li>
-                        <li>Takımların toplam bisiklet değeri 13 milyon Euro'yu aşar</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Tanıtım Karavanı</h3>
-                    <p class="mb-4">
-                        Tour de France'ın en renkli geleneklerinden biri, bisikletçilerden saatler önce yola çıkan tanıtım karavanıdır. Bu karavanın bazı ilginç istatistikleri:
-                    </p>
-                    <ul class="list-disc pl-5 mb-4">
-                        <li>Tour boyunca seyircilere yaklaşık 16 milyon promosyon ürünü dağıtılır</li>
-                        <li>35+ marka her yıl karavanda yer alır</li>
-                        <li>Yaklaşık 12 milyon izleyici bu karavanı görmek için yol kenarına dizilir</li>
-                        <li>Karavanın bir etaptaki geçişi 30-45 dakika sürer</li>
-                        <li>Sponsorların karavanda yer almak için ödediği ücret 250.000 ile 600.000 Euro arasında değişir</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-bold mb-4">Medya Etkisi</h3>
-                <p class="mb-4">
-                    Tour de France, sadece bir spor etkinliği değil, aynı zamanda büyük bir medya fenomenidir:
-                </p>
-                <ul class="list-disc pl-5">
-                    <li>2,500 akredite gazeteci ve fotoğrafçı tur boyunca yarışı takip eder</li>
-                    <li>260 kamera operatörü (motosiklet, araba ve helikopterlerde) yarışı canlı görüntüler</li>
-                    <li>500+ teknisyen her gün bitiş çizgisinde teknik bölgede görev yapar</li>
-                    <li>Web sitesi yıllık 14.5 milyon benzersiz ziyaretçi çeker</li>
-                    <li>Sosyal medya platformlarında 13.7 milyon takipçisi bulunur</li>
-                    <li>Tour de France videoları 740 milyon izlenmeye ulaşır</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Efsanevi Bisikletçiler Bölümü -->
-        <section id="efsaneler" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Efsanevi Bisikletçiler</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Beş Kez Zafer Kazananlar</h3>
-                    <p class="mb-4">
-                        Tour de France tarihinde beş kez şampiyonluk kazanmış dört büyük isim, bisiklet tarihinin en büyük efsaneleri olarak kabul edilir:
-                    </p>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Eddy Merckx (Belçika)</h4>
-                        <p class="italic text-gray-600">1969, 1970, 1971, 1972, 1974</p>
-                        <p>
-                            "Kannibaal" (Yamyam) lakaplı Merckx, en çok etap kazanan bisikletçi unvanını (34) elinde tutuyor. Birçok uzman tarafından tüm zamanların en büyük bisikletçisi kabul edilir.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Jacques Anquetil (Fransa)</h4>
-                        <p class="italic text-gray-600">1957, 1961, 1962, 1963, 1964</p>
-                        <p>
-                            Tour de France'ı beş kez kazanan ilk bisikletçi. Özellikle zamana karşı etaplardaki üstünlüğüyle tanınırdı.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Bernard Hinault (Fransa)</h4>
-                        <p class="italic text-gray-600">1978, 1979, 1981, 1982, 1985</p>
-                        <p>
-                            "Le Blaireau" (Porsuk) lakaplı Hinault, sert karakteri ve liderlik özellikleriyle tanınırdı. 28 etap galibiyetiyle tüm zamanların en başarılı ikinci bisikletçisidir.
-                        </p>
-                    </div>
-                    
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-8">
                     <div>
-                        <h4 class="text-xl font-bold text-blue-800">Miguel Indurain (İspanya)</h4>
-                        <p class="italic text-gray-600">1991, 1992, 1993, 1994, 1995</p>
-                        <p>
-                            "Big Mig" olarak bilinen Indurain, beş kez üst üste Tour kazanan ilk ve tek bisikletçidir. Güçlü zamana karşı performansı ve dağlardaki savunma yeteneğiyle öne çıkardı.
-                        </p>
+                        <label class="block font-semibold mb-2 text-gray-700">Hava Sıcaklığı: <span id="tempValue">15</span>°C</label>
+                        <div class="flex items-center">
+                            <span class="text-xs text-blue-600 mr-2">-10°C</span>
+                            <input type="range" min="-10" max="40" value="15" class="w-full" id="temperature">
+                            <span class="text-xs text-red-600 ml-2">40°C</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Modern Dönemin Yıldızları</h3>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Tadej Pogačar (Slovenya)</h4>
-                        <p class="italic text-gray-600">2020, 2021, 2024, 2025</p>
-                        <p>
-                            Henüz 26 yaşında dört Tour de France zaferine ulaşan Pogačar, bisiklet tarihinin en genç çoklu şampiyonlarından biridir. 2024'te Giro, Tour ve Dünya Şampiyonluğunu aynı yıl kazanarak bisikletin "Üçlü Tacı"na ulaşan nadir bisikletçilerden oldu.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Jonas Vingegaard (Danimarka)</h4>
-                        <p class="italic text-gray-600">2022, 2023</p>
-                        <p>
-                            Pogačar'ın en büyük rakibi olan Vingegaard, 2022 ve 2023'te art arda Tour de France zaferlerine ulaştı. Özellikle dağ etaplarındaki üstünlüğüyle tanınır.
-                        </p>
-                    </div>
-                    
+
                     <div>
-                        <h4 class="text-xl font-bold text-blue-800">Mark Cavendish (Büyük Britanya)</h4>
-                        <p class="italic text-gray-600">34 Etap Galibiyeti</p>
-                        <p>
-                            "Manx Missile" (Man Adası Füzesi) lakaplı Cavendish, Eddy Merckx ile birlikte en çok etap kazanan bisikletçi rekorunu elinde tutuyor. Onun sprint finişleri Tour tarihinin en heyecanlı anlarını oluşturur.
-                        </p>
+                        <label class="block font-semibold mb-2 text-gray-700">Hava Koşulları:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            <button class="weather-btn bg-blue-100 hover:bg-blue-200 py-2 px-4 rounded-lg flex items-center justify-center text-sm active" data-weather="sunny">
+                                <i class="fas fa-sun text-yellow-500 mr-2"></i> Güneşli
+                            </button>
+                            <button class="weather-btn bg-blue-100 hover:bg-blue-200 py-2 px-4 rounded-lg flex items-center justify-center text-sm" data-weather="rainy">
+                                <i class="fas fa-cloud-rain text-blue-500 mr-2"></i> Yağmurlu
+                            </button>
+                            <button class="weather-btn bg-blue-100 hover:bg-blue-200 py-2 px-4 rounded-lg flex items-center justify-center text-sm" data-weather="windy">
+                                <i class="fas fa-wind text-gray-500 mr-2"></i> Rüzgarlı
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-                <h3 class="text-2xl font-bold mb-4">Tour de France'ta Rekorlar</h3>
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="py-2 px-4 text-left">Rekor</th>
-                            <th class="py-2 px-4 text-left">Sahibi</th>
-                            <th class="py-2 px-4 text-left">İstatistik</th>
-                            <th class="py-2 px-4 text-left">Yıl</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En çok genel klasman zaferi</td>
-                            <td class="py-2 px-4 border-t">J. Anquetil, E. Merckx, B. Hinault, M. Indurain</td>
-                            <td class="py-2 px-4 border-t">5 zafer</td>
-                            <td class="py-2 px-4 border-t">Çeşitli</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En çok etap galibiyeti</td>
-                            <td class="py-2 px-4 border-t">Eddy Merckx ve Mark Cavendish</td>
-                            <td class="py-2 px-4 border-t">34 etap</td>
-                            <td class="py-2 px-4 border-t">Çeşitli</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En çok sarı mayo giyme</td>
-                            <td class="py-2 px-4 border-t">Eddy Merckx</td>
-                            <td class="py-2 px-4 border-t">96 gün</td>
-                            <td class="py-2 px-4 border-t">1969-1975</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En genç şampiyon</td>
-                            <td class="py-2 px-4 border-t">Henri Cornet</td>
-                            <td class="py-2 px-4 border-t">19 yaş 352 gün</td>
-                            <td class="py-2 px-4 border-t">1904</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En yaşlı şampiyon</td>
-                            <td class="py-2 px-4 border-t">Firmin Lambot</td>
-                            <td class="py-2 px-4 border-t">36 yaş 131 gün</td>
-                            <td class="py-2 px-4 border-t">1922</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En hızlı Tour de France</td>
-                            <td class="py-2 px-4 border-t">Jonas Vingegaard</td>
-                            <td class="py-2 px-4 border-t">42.155 km/h</td>
-                            <td class="py-2 px-4 border-t">2023</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En yakın zafer farkı</td>
-                            <td class="py-2 px-4 border-t">Greg LeMond</td>
-                            <td class="py-2 px-4 border-t">8 saniye</td>
-                            <td class="py-2 px-4 border-t">1989</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En çok yeşil mayo</td>
-                            <td class="py-2 px-4 border-t">Peter Sagan</td>
-                            <td class="py-2 px-4 border-t">7 kez</td>
-                            <td class="py-2 px-4 border-t">2012-2019</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">En çok puanlı mayo</td>
-                            <td class="py-2 px-4 border-t">Richard Virenque</td>
-                            <td class="py-2 px-4 border-t">7 kez</td>
-                            <td class="py-2 px-4 border-t">1994-2004</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-4 border-t">Alpe d'Huez'de en hızlı tırmanış</td>
-                            <td class="py-2 px-4 border-t">Marco Pantani</td>
-                            <td class="py-2 px-4 border-t">36:50</td>
-                            <td class="py-2 px-4 border-t">1997</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
 
-        <!-- İnsanüstü Efor Bölümü -->
-        <section id="efor" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">İnsanüstü Bir Efor</h2>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Fiziksel Sınırları Zorlamak</h3>
-                    <p class="mb-4">
-                        Tour de France bisikletçileri, insan vücudunun sınırlarını zorlayan inanılmaz bir fiziksel efor sergilerler:
-                    </p>
-                    <ul class="list-disc pl-5">
-                        <li>Bir Tour de France şampiyonu, yarış boyunca ortalama <span class="stat-highlight">325 watt</span> güç üretir - bu, normal bir bisikletçinin sadece 20 dakika boyunca üretebileceği gücün üzerindedir.</li>
-                        <li>Bisikletçiler, tüm tur boyunca yaklaşık <span class="stat-highlight">120.000 kalori</span> yakarlar - bu, yaklaşık 210 Big Mac hamburgerin kalorisine eşdeğerdir.</li>
-                        <li>Dağ etaplarında, bisikletçiler kısa süreler için <span class="stat-highlight">1.000 watt</span> güce kadar çıkabilirler - bu, bir mikrodalga fırını çalıştırmaya yetecek güçtür.</li>
-                        <li>Sıcak bir günde bir bisikletçi, saatte <span class="stat-highlight">1,5 litre</span> ter atabilir.</li>
-                        <li>Yarışçılar ortalama <span class="stat-highlight">5-6 saat</span> pedal çevirirler ve günde ortalama <span class="stat-highlight">170 kilometre</span> yol katederler.</li>
-                        <li>Elit düzeyde bir bisikletçinin, kilo başına <span class="stat-highlight">6 watt</span> civarında güç üretebilmesi gerekir.</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Beslenme ve Hidrasyon</h3>
-                    <p class="mb-4">
-                        Bu kadar büyük bir efor, bisikletçilerin beslenme ve hidrasyonunu kritik hale getirir:
-                    </p>
-                    <ul class="list-disc pl-5">
-                        <li>Tüm bisikletçiler yarış boyunca yaklaşık <span class="stat-highlight">46.000 bidon</span> su tüketir.</li>
-                        <li>Bir dağ etabında tek bir bisikletçi <span class="stat-highlight">10-15 bidon</span> su içebilir.</li>
-                        <li>Yarışçılar tur boyunca yaklaşık <span class="stat-highlight">69.000 enerji barı ve 69.000 enerji jeli</span> tüketir.</li>
-                        <li>Bisikletçiler yarış esnasında sürekli beslenmek zorundadır - etaplar sırasında her saat <span class="stat-highlight">60-90 gram karbonhidrat</span> almaları gerekir.</li>
-                        <li>Büyük tırmanışlarda bir bisikletçi <span class="stat-highlight">8.000 kaloriye</span> kadar enerji harcayabilir - bu, normal bir yetişkinin üç günlük kalori ihtiyacına eşdeğerdir.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div style="height: 400px;" class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-2xl font-bold mb-4">Güç Dağılımı (Watt)</h3>
-                <canvas id="powerChart"></canvas>
-            </div>
-            
-            <div class="quote-block p-6 italic">
-                <p class="text-lg">
-                    "Tour de France'ta başarılı olmak için sadece güçlü bacaklara sahip olmak yetmez. Akıl, dayanıklılık, cesaret ve ekip çalışması, sarı mayoyu Paris'e taşımanın anahtarlarıdır."
-                </p>
-                <p class="text-right mt-2">- Bernard Hinault, beş kez Tour de France şampiyonu</p>
-            </div>
-        </section>
+                    <div>
+                        <label class="block font-semibold mb-2 text-gray-700">Koşu Tipi:</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="run-type-btn bg-blue-100 hover:bg-blue-200 py-3 px-4 rounded-lg flex items-center justify-center active" data-type="road">
+                                <i class="fas fa-road text-blue-800 mr-2"></i> Yol Koşusu
+                            </button>
+                            <button class="run-type-btn bg-blue-100 hover:bg-blue-200 py-3 px-4 rounded-lg flex items-center justify-center" data-type="trail">
+                                <i class="fas fa-mountain text-green-800 mr-2"></i> Trail Koşusu
+                            </button>
+                        </div>
+                    </div>
 
-        <!-- 2025 Tour Bölümü -->
-        <section id="tur2025" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Tour de France 2025</h2>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-2xl font-bold mb-4">Pogačar'ın Dördüncü Zaferi</h3>
-                <p class="mb-4">
-                    2025 Tour de France'ta Slovenya'nın yıldızı Tadej Pogačar (UAE Team Emirates-XRG), dördüncü Tour de France zaferini kutlamaya hazırlanıyor. 21 etaptan oluşan tur boyunca rakiplerini geride bırakmayı başaran 26 yaşındaki bisikletçi, Jonas Vingegaard'ı (Visma-Lease a Bike) 4 dakika 24 saniye farkla geride bıraktı.
-                </p>
-                <p class="mb-4">
-                    2020 ve 2021'deki ilk iki zaferinin ardından, 2022 ve 2023'te Vingegaard'a karşı şampiyonluğu kaybeden Pogačar, son iki yılda geri dönüşüyle kendini bisiklet tarihinin en büyükleri arasına soktu.
-                </p>
-                <p>
-                    "Bu yıl başka bir seviyedeydi. İlk günden sona kadar insanlar sürekli bana saldırdı, bu yüzden odaklanmak önemliydi" diyen Pogačar, artık Jacques Anquetil, Eddy Merckx, Bernard Hinault ve Miguel Indurain gibi beş kez şampiyonluk kazanmış efsanelere bir adım daha yaklaştı.
-                </p>
-            </div>
-            
-            <div class="stage-table mb-8">
-                <h3 class="text-2xl font-bold p-6">2025 Genel Klasman - Final Sıralama</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <th class="py-2 px-4 text-left">Sıra</th>
-                                <th class="py-2 px-4 text-left">Bisikletçi</th>
-                                <th class="py-2 px-4 text-left">Ülke</th>
-                                <th class="py-2 px-4 text-left">Takım</th>
-                                <th class="py-2 px-4 text-left">Zaman</th>
-                                <th class="py-2 px-4 text-left">Fark</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-2 px-4 border-t">1</td>
-                                <td class="py-2 px-4 border-t font-bold">Tadej Pogačar</td>
-                                <td class="py-2 px-4 border-t">Slovenya</td>
-                                <td class="py-2 px-4 border-t">UAE Team Emirates-XRG</td>
-                                <td class="py-2 px-4 border-t">69s 41d 46sn</td>
-                                <td class="py-2 px-4 border-t">-</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">2</td>
-                                <td class="py-2 px-4 border-t">Jonas Vingegaard</td>
-                                <td class="py-2 px-4 border-t">Danimarka</td>
-                                <td class="py-2 px-4 border-t">Visma-Lease a Bike</td>
-                                <td class="py-2 px-4 border-t">69s 46d 10sn</td>
-                                <td class="py-2 px-4 border-t">+4d 24sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">3</td>
-                                <td class="py-2 px-4 border-t">Florian Lipowitz</td>
-                                <td class="py-2 px-4 border-t">Almanya</td>
-                                <td class="py-2 px-4 border-t">Red Bull-Bora-Hansgrohe</td>
-                                <td class="py-2 px-4 border-t">69s 52d 55sn</td>
-                                <td class="py-2 px-4 border-t">+11d 09sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">4</td>
-                                <td class="py-2 px-4 border-t">Oscar Onley</td>
-                                <td class="py-2 px-4 border-t">Büyük Britanya</td>
-                                <td class="py-2 px-4 border-t">DSM-Firmenich PostNL</td>
-                                <td class="py-2 px-4 border-t">69s 53d 58sn</td>
-                                <td class="py-2 px-4 border-t">+12d 12sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">5</td>
-                                <td class="py-2 px-4 border-t">Felix Gall</td>
-                                <td class="py-2 px-4 border-t">Avusturya</td>
-                                <td class="py-2 px-4 border-t">Decathlon AG2R La Mondiale</td>
-                                <td class="py-2 px-4 border-t">69s 58d 58sn</td>
-                                <td class="py-2 px-4 border-t">+17d 12sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">6</td>
-                                <td class="py-2 px-4 border-t">Tobias Johannessen</td>
-                                <td class="py-2 px-4 border-t">Norveç</td>
-                                <td class="py-2 px-4 border-t">Uno-X Mobility</td>
-                                <td class="py-2 px-4 border-t">70s 02d 00sn</td>
-                                <td class="py-2 px-4 border-t">+20d 14sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">7</td>
-                                <td class="py-2 px-4 border-t">Kevin Vauquelin</td>
-                                <td class="py-2 px-4 border-t">Fransa</td>
-                                <td class="py-2 px-4 border-t">Arkéa-B&B Hotels</td>
-                                <td class="py-2 px-4 border-t">70s 04d 21sn</td>
-                                <td class="py-2 px-4 border-t">+22d 35sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">8</td>
-                                <td class="py-2 px-4 border-t">Primož Roglič</td>
-                                <td class="py-2 px-4 border-t">Slovenya</td>
-                                <td class="py-2 px-4 border-t">Red Bull-Bora-Hansgrohe</td>
-                                <td class="py-2 px-4 border-t">70s 07d 16sn</td>
-                                <td class="py-2 px-4 border-t">+25d 30sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">9</td>
-                                <td class="py-2 px-4 border-t">Ben Healy</td>
-                                <td class="py-2 px-4 border-t">İrlanda</td>
-                                <td class="py-2 px-4 border-t">EF Education-EasyPost</td>
-                                <td class="py-2 px-4 border-t">70s 09d 48sn</td>
-                                <td class="py-2 px-4 border-t">+28d 02sn</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-t">10</td>
-                                <td class="py-2 px-4 border-t">Jordan Jegat</td>
-                                <td class="py-2 px-4 border-t">Fransa</td>
-                                <td class="py-2 px-4 border-t">TotalEnergies</td>
-                                <td class="py-2 px-4 border-t">70s 14d 28sn</td>
-                                <td class="py-2 px-4 border-t">+32d 42sn</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div>
+                        <label class="block font-semibold mb-2 text-gray-700">Antrenman Tipi:</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button class="workout-btn bg-blue-100 hover:bg-blue-200 py-2 px-3 rounded-lg flex items-center justify-center text-sm active" data-workout="short">
+                                <i class="fas fa-bolt text-yellow-500 mr-2"></i> Kısa/Hızlı
+                            </button>
+                            <button class="workout-btn bg-blue-100 hover:bg-blue-200 py-2 px-3 rounded-lg flex items-center justify-center text-sm" data-workout="medium">
+                                <i class="fas fa-running text-blue-500 mr-2"></i> Orta Mesafe
+                            </button>
+                            <button class="workout-btn bg-blue-100 hover:bg-blue-200 py-2 px-3 rounded-lg flex items-center justify-center text-sm" data-workout="long">
+                                <i class="fas fa-road text-green-500 mr-2"></i> Uzun Mesafe
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">2025'in Önemli Anları</h3>
-                    <ul class="list-disc pl-5">
-                        <li><strong>Ben Healy'nin 6. Etap Zaferi:</strong> İrlandalı bisikletçi, 201 kilometrelik Bayeux-Vire etabında etkileyici bir solo atakla galibiyete ulaştı.</li>
-                        <li><strong>Healy'nin Sarı Mayosu:</strong> 10. etapta sarı mayoyu giyen Ben Healy, Stephen Roche'tan (1987) bu yana sarı mayo giyen ilk İrlandalı bisikletçi oldu.</li>
-                        <li><strong>Arensman'ın La Plagne Zaferi:</strong> 19. etapta Hollandalı Thymen Arensman (Ineos Grenadiers), son tırmanışta yaptığı atakla etap galibiyetini 2 saniye farkla kazandı.</li>
-                        <li><strong>Kaden Groves'un Solo Etap Galibiyeti:</strong> Avustralyalı sprinter, 20. etapta 130 kilometrelik bir kaçışın ardından etkileyici bir solo zafer kazandı ve üç büyük turda (Giro, Tour, Vuelta) etap kazanan bir bisikletçi oldu.</li>
-                        <li><strong>Pogačar'ın 100. Zaferi:</strong> Slovenya'lı yıldız, 4. etapta profesyonel kariyerinin 100. galibiyetini elde etti.</li>
-                    </ul>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Jersey Sahipleri</h3>
-                    
-                    <div class="flex items-center mb-6">
-                        <span class="jersey yellow-jersey"></span>
-                        <div>
-                            <p class="font-bold">Sarı Mayo (Genel Klasman)</p>
-                            <p>Tadej Pogačar (UAE Team Emirates-XRG)</p>
+
+                <div id="clothingResult" class="bg-gray-100 p-5 rounded-lg">
+                    <h3 class="font-bold text-lg mb-4 text-center text-blue-800">Önerilen Kıyafetler</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-white rounded-lg shadow-sm result-card active">
+                            <h4 class="font-semibold"><i class="fas fa-tshirt text-blue-500 mr-2"></i>Üst Giyim</h4>
+                            <p id="upperClothing">Hafif, nefes alabilen kısa kollu tişört</p>
                         </div>
-                    </div>
-                    
-                    <div class="flex items-center mb-6">
-                        <span class="jersey green-jersey"></span>
-                        <div>
-                            <p class="font-bold">Yeşil Mayo (Puan Klasmanı)</p>
-                            <p>Jonathan Milan (Lidl-Trek)</p>
+                        <div class="p-3 bg-white rounded-lg shadow-sm result-card active">
+                            <h4 class="font-semibold"><i class="fas fa-socks text-blue-500 mr-2"></i>Alt Giyim</h4>
+                            <p id="lowerClothing">Hafif koşu şortu veya kısa tayt</p>
                         </div>
-                    </div>
-                    
-                    <div class="flex items-center mb-6">
-                        <span class="jersey polka-jersey"></span>
-                        <div>
-                            <p class="font-bold">Puanlı Mayo (Dağların Kralı)</p>
-                            <p>Tadej Pogačar (UAE Team Emirates-XRG)</p>
+                        <div class="p-3 bg-white rounded-lg shadow-sm result-card active">
+                            <h4 class="font-semibold"><i class="fas fa-shoe-prints text-blue-500 mr-2"></i>Ayakkabı</h4>
+                            <p id="footwear">Hafif, nefes alabilen yol koşu ayakkabısı</p>
                         </div>
-                    </div>
-                    
-                    <div class="flex items-center">
-                        <span class="jersey white-jersey"></span>
-                        <div>
-                            <p class="font-bold">Beyaz Mayo (Genç Bisikletçi)</p>
-                            <p>Oscar Onley (DSM-Firmenich PostNL)</p>
-                            <p class="text-sm text-gray-600">Not: Remco Evenepoel yarışı terk etmişti.</p>
+                        <div class="p-3 bg-white rounded-lg shadow-sm result-card active">
+                            <h4 class="font-semibold"><i class="fas fa-hat-cowboy text-blue-500 mr-2"></i>Aksesuar</h4>
+                            <p id="accessories">Koşu şapkası, güneş gözlüğü</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg shadow-sm result-card active">
+                            <h4 class="font-semibold"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Notlar</h4>
+                            <p id="notes">Ilıman hava için ideal koşu şartları. Hafif ve nefes alabilen kıyafetler tercih edin.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <!-- Taraftar Deneyimi Bölümü -->
-        <section id="taraftar" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Eşsiz Taraftar Deneyimi</h2>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-2xl font-bold mb-4">Yol Kenarında Bir Festival</h3>
-                <p class="mb-4">
-                    Tour de France, yalnızca bir bisiklet yarışı değil, aynı zamanda üç hafta süren büyük bir festival gibidir. Her yıl yaklaşık 12 milyon seyirci, rotanın çeşitli noktalarında konumlanarak bu eşsiz deneyimi yaşamak ister.
-                </p>
-                <p class="mb-4">
-                    İzleyiciler genellikle 4-5 kişilik gruplar halinde gelir ve günde ortalama 7 saat boyunca yol kenarında beklerler. Bisikletçiler yalnızca birkaç saniye içinde geçip giderken, asıl deneyim bekleme süresi ve festivalin atmosferidir.
-                </p>
-                <p>
-                    Tour de France, ayrıca dünyanın en büyük ücretsiz spor etkinliklerinden biridir. İzleyicilerin çoğu, etap güzergâhında bir yer kapmak için saatlerce, hatta bazen günlerce önceden kamp kurar.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Efsanevi Taraftar Bölgeleri</h3>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Alpe d'Huez'in Hollandalı Köşesi</h4>
-                        <p>
-                            Tour'un en ünlü taraftar noktalarından biri, Alpe d'Huez tırmanışının 7. virajında bulunan "Dutch Corner" (Hollandalı Köşesi) olarak bilinen bölgedir. Burada toplanan on binlerce turuncu giyimli Hollandalı taraftar, dağ etabını bir açık hava festivaline çevirir.
-                        </p>
-                        <p class="italic text-gray-600">
-                            "Bayrak ve müzik sesleri arasında bisiklet binmek, tamamen başka bir deneyim. Her şey o kadar duygu yüklü ki bunu hiçbir şeyle karşılaştıramam." - Tom Dumoulin
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-xl font-bold text-blue-800">Col du Tourmalet</h4>
-                        <p>
-                            Pireneler'deki bu efsanevi tırmanış, genellikle binlerce taraftarla dolar. Geçmişte bisikletçilerin yolunu açmak için polis kordonları oluşturulması gerekecek kadar kalabalıklar oluşmuştur.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Renkli Taraftar Karakterleri</h3>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">El Diablo (Didi Senft)</h4>
-                        <p>
-                            Didi Senft adlı Alman taraftar, kırmızı şeytan kostümüyle tanınır ve yıllardır turun ikonik figürlerinden biridir. Büyük üç çatalı ve karakteristik dansıyla tanınır.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h4 class="text-xl font-bold text-blue-800">Kostümlü Taraftarlar</h4>
-                        <p>
-                            Tavuk kostümleri giyenlerden, çıplak koşanlara, traktörlerle şov yapanlardan Forrest Gump gibi pelotonun yanında koşanlara kadar çeşitli renkli taraftarlar her yıl Tour'a renk katar.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-xl font-bold text-blue-800">Karavancılar</h4>
-                        <p>
-                            Birçok taraftar, en iyi seyir noktalarını yakalamak için günler öncesinden karavanlarıyla rota üzerinde kamp kurar. Özellikle dağ etaplarında, yollar karavanlarla dolar ve her viraj farklı bir ulustan taraftarların bölgesi haline gelir.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="quote-block p-6 italic">
-                <p class="text-lg">
-                    "Tour de France'ı gerçekten anlamak istiyorsanız, televizyonda izlemekle yetinemezsiniz. Zirveye tırmanmak için saatlerce yürümelisiniz, yağmurda ıslanmalısınız, günlerce çadırda kalmalısınız ve bisikletçiler geçerken onlara cesaret vermek için sesiniz kısılana kadar bağırmalısınız. İşte o zaman Tour'un gerçek ruhunu hissedersiniz."
-                </p>
-                <p class="text-right mt-2">- Harry Chemay, Avustralyalı bisiklet tutkunu</p>
-            </div>
-        </section>
-        
-        <!-- Skandallar Bölümü -->
-        <section id="skandallar" class="mb-16">
-            <h2 class="section-title text-3xl mb-6">Karanlık Sayfalar: Skandallar ve Tartışmalar</h2>
-            
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-2xl font-bold mb-4">Tour de France'ın Doping Tarihi</h3>
-                <p class="mb-4">
-                    Tour de France'ın görkemli tarihi kadar karanlık sayfaları da vardır. Yarışın ilk yıllarından itibaren doping ve skandallar hiç eksik olmamıştır. Bu skandallar, bisiklet sporunun imajına büyük darbe vurduysa da, son yıllarda antidoping kontrolleri ve bilinci artmış, spor daha temiz bir döneme girmiştir.
-                </p>
-                
-                <div class="mb-6">
-                    <h4 class="text-xl font-bold text-blue-800">Erken Dönem Hileleri (1904)</h4>
-                    <p>
-                        Daha ikinci Tour de France'ta, ilk şampiyon Maurice Garin dahil olmak üzere ilk dört bitirici, tren kullanmak ve diğer hilelerle suçlanıp diskalifiye edildi. İlk şampiyonun diskalifiye edilmesi, yarışın daha en başında tartışmalı bir tarih yazmasına neden oldu.
-                    </p>
-                </div>
-                
-                <div class="mb-6">
-                    <h4 class="text-xl font-bold text-blue-800">Tom Simpson Trajedisi (1967)</h4>
-                    <p>
-                        Britanyalı bisikletçi Tom Simpson, Mont Ventoux tırmanışı sırasında amfetamin, alkol ve sıcaklığın etkisiyle fenalaşıp hayatını kaybetti. Bu trajik olay, bisiklet dünyasının doping gerçeğiyle ciddi şekilde yüzleşmesine neden oldu.
-                    </p>
-                </div>
-                
-                <div class="mb-6">
-                    <h4 class="text-xl font-bold text-blue-800">Festina Olayı (1998)</h4>
-                    <p>
-                        Festina takımının masörünün arabasında yakalanan büyük miktarda doping maddesi, turu derinden sarstı. Takım diskalifiye edildi ve birçok diğer takım da ya yarıştan çıkarıldı ya da kendileri çekildi. "Festina Affair" olarak bilinen bu skandal, modern bisiklet tarihindeki en büyük doping skandallarından biri olarak kabul edilir.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="text-xl font-bold text-blue-800">Lance Armstrong Skandalı</h4>
-                    <p>
-                        Yedi kez üst üste Tour şampiyonu olan Amerikalı bisikletçi Lance Armstrong, sistematik doping kullanımı nedeniyle tüm unvanlarından mahrum bırakıldı. 1999-2005 arasındaki yedi Tour de France zaferi resmi kayıtlardan silindi. Armstrong, önceleri iddiaları reddettiyse de, sonunda Oprah Winfrey ile yaptığı röportajda doping kullandığını itiraf etti.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Diğer Önemli Skandallar</h3>
-                    
-                    <div class="mb-4">
-                        <h4 class="text-xl font-bold text-blue-800">Floyd Landis (2006)</h4>
-                        <p>
-                            2006 Tour de France şampiyonu Floyd Landis, yarıştan sonra yapılan testlerde testosteron seviyelerinin yüksek çıkması nedeniyle unvanından oldu. İlk başta suçlamaları reddeden Landis, sonradan sadece bu yarışta değil, kariyeri boyunca doping kullandığını itiraf etti.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <h4 class="text-xl font-bold text-blue-800">Michael Rasmussen Olayı (2007)</h4>
-                        <p>
-                            2007 Tour'unda sarı mayoyu taşıyan Danimarkalı Michael Rasmussen, yarışma öncesindeki testlere katılmaktan kaçındığı gerekçesiyle kendi takımı tarafından yarıştan çıkarıldı. Bu olay, doping kontrol sisteminin önemini bir kez daha gözler önüne serdi.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-xl font-bold text-blue-800">2021 Seyirci Kazası</h4>
-                        <p>
-                            2021 Tour'unun ilk etabında, bir seyirci elinde tuttuğu kartonla televizyona çıkmaya çalışırken Alman bisikletçi Tony Martin'e çarptı. Bu kaza büyük bir peloton düşüşüne neden oldu. "Turdaki en kötü kaza" olarak nitelendirilen olayın ardından seyirci tutuklandı ve 1.200 euro para cezasına çarptırıldı.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-2xl font-bold mb-4">Turdaki Diğer İlginç Olaylar</h3>
-                    
-                    <div class="mb-4">
-                        <h4 class="text-xl font-bold text-blue-800">Eddy Merckx'e Yumruk (1975)</h4>
-                        <p>
-                            Beş kez Tour de France şampiyonu Eddy Merckx, 1975'te bir taraftar tarafından yumruklandı. Saldırının ardından nefes almakta zorlanan Merckx etabı tamamladı, ancak bu olay onun altıncı zaferini kazanmasını engelledi.
-                        </p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <h4 class="text-xl font-bold text-blue-800">Chaingate (2010)</h4>
-                        <p>
-                            2010 Tour'unda Andy Schleck'in bisikletinin zinciri düştü ve rakibi Alberto Contador bu durumdan yararlanıp öne geçti. Bu, bisiklet sporunda rakibin mekanik sorunlarından yararlanılmaması gerektiğine dair yazılı olmayan kuralı ihlal ettiği gerekçesiyle tartışmalara yol açtı.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-xl font-bold text-blue-800">TV Arabası Kazası (2011)</h4>
-                        <p>
-                            2011'in 9. etabında bir televizyon arabası, kaçış grubundaki Juan Antonio Flecha ve Johnny Hoogerland'e çarptı. İki bisikletçi de ciddi şekilde yaralandı, özellikle Hoogerland bir çite uçarak korkunç yaralar aldı. Buna rağmen her iki bisikletçi de etabı tamamlamayı başardı.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Teşekkür Bölümü -->
-        <section id="tesekkur" class="thank-you-section p-12 text-center rounded-lg mb-8">
-            <h2 class="text-3xl font-bold mb-6">Tura Teşekkür</h2>
-            <p class="text-xl mb-6 max-w-3xl mx-auto">
-                Alpler'in zirvelerinde doğan şafak, Pireneler'in sarp yamaçlarında batan güneş, Paris'in altın ışıltısına doğru uzanan yollar... İyisiyle kötüsüyle, acısıyla tatlısıyla, düşüyle kalkışıyla, bir asrı aşkın zamandır ruhlarımıza dokunan bu efsaneye teşekkürler. Bisikletin ötesinde, dayanıklılığın, cesaretin ve tutkunun şiirine teşekkürler. Vive le Tour!
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Giriş</h2>
+            <p class="mb-4">
+                Koşu performansı, doğru beslenme ve antrenman programının yanı sıra uygun giyim seçimleriyle de doğrudan ilişkilidir. Farklı hava koşulları, koşu mesafesi, tempo ve sürelere göre doğru kıyafet seçimi yapmak, koşucuların performansını önemli ölçüde etkileyebilir. Bu rehber, koşucuların farklı koşullara göre optimum performans elde etmek için giyim kuşam seçimlerini bilimsel araştırmalarla desteklenmiş bilgiler ışığında yapabilmelerini sağlamak amacıyla hazırlanmıştır.
+            </p>
+            <p>
+                Bu rehberde, hem yol koşusu hem de trail koşusu için ayrı ayrı öneriler bulacak, hava koşullarının performansa etkisini ve bu etkileri en aza indirmek için yapmanız gereken giyim seçimlerini öğreneceksiniz.
             </p>
         </section>
-    </main>
 
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <p class="font-bold text-lg">Tour de France: Efsanenin İzinde</p>
-                    <p>&copy; 2025 Hazırlayan: Ümit Emre Erdoğan</p>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Yol Koşusu ve Trail Koşusu Arasındaki Farklar</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-800"><i class="fas fa-road mr-2"></i>Yol Koşusu</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Asfalt veya düzenli zeminlerde yapılır</li>
+                        <li>Genellikle düz veya hafif eğimli parkurlarda koşulur</li>
+                        <li>Daha hafif ve minimal ayakkabılar tercih edilir</li>
+                        <li>Hava koşullarına daha az maruz kalınır</li>
+                        <li>Şehir içi veya şehir çevresi parkurlarda koşulur</li>
+                        <li>Daha yüksek tempo ve hız hedeflenir</li>
+                    </ul>
                 </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-twitter fa-lg"></i></a>
-                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-facebook fa-lg"></i></a>
-                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-youtube fa-lg"></i></a>
+                <div class="card bg-green-50 p-6 rounded-lg border border-green-100">
+                    <h3 class="text-xl font-semibold mb-3 text-green-800"><i class="fas fa-mountain mr-2"></i>Trail Koşusu</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Doğal arazi, patika ve dağlık alanlarda koşulur</li>
+                        <li>Değişken yükseklik, eğim ve zemin özellikleri görülür</li>
+                        <li>Daha kalın tabanlı, su geçirmeyen ayakkabılar tercih edilir</li>
+                        <li>Ekstrem hava koşullarına maruz kalma riski daha yüksektir</li>
+                        <li>Doğa içinde, dağ, orman ve patikalarda koşulur</li>
+                        <li>Teknik beceri ve dayanıklılık ön plandadır</li>
+                    </ul>
                 </div>
             </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Optimum Koşu Performansı için Sıcaklık ve Hava Koşulları</h2>
+            
+            <p class="mb-4">
+                Bilimsel araştırmalar, koşucuların en iyi performansı belirli bir sıcaklık aralığında gösterdiğini ortaya koymaktadır. Medicine & Science in Sports & Exercise dergisinde yayınlanan araştırmalara göre, koşu performansı için optimum sıcaklık aralığı 7.5°C–15°C WBGT (ıslak termometre bilyeli sıcaklık) veya 10°C–17.5°C hava sıcaklığı olarak belirlenmiştir.
+            </p>
+
+            <div class="my-6 p-4 border rounded-lg temp-optimal">
+                <h3 class="font-semibold text-lg mb-2">Optimum Koşu Sıcaklığı</h3>
+                <p>7.5°C–15°C WBGT (ıslak termometre bilyeli sıcaklık) veya 10°C–17.5°C hava sıcaklığı</p>
+            </div>
+
+            <p class="mb-4">
+                Farklı koşu mesafeleri için optimum sıcaklıklar ise şu şekilde belirlenmiştir:
+            </p>
+
+            <table class="mb-6">
+                <thead>
+                    <tr>
+                        <th>Koşu Türü/Mesafesi</th>
+                        <th>Optimum WBGT Sıcaklığı</th>
+                        <th>Performans Düşüş Oranı (Sıcağa)</th>
+                        <th>Performans Düşüş Oranı (Soğuğa)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Maraton</td>
+                        <td>7.5°C</td>
+                        <td>%0.2 / 1°C</td>
+                        <td>%0.1 / 1°C</td>
+                    </tr>
+                    <tr>
+                        <td>10.000 metre</td>
+                        <td>10°C</td>
+                        <td>%0.04 / 1°C</td>
+                        <td>Belirtilmemiş</td>
+                    </tr>
+                    <tr>
+                        <td>5000 metre</td>
+                        <td>15°C</td>
+                        <td>%0.3 / 1°C</td>
+                        <td>%0.2 / 1°C</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="mb-4">
+                Bu optimum aralığın dışındaki her 1°C sıcaklık değişimi için performans yaklaşık %0.3–0.4 oranında düşmektedir. Sıcak havaya karşı performans düşüşü, soğuk havaya göre genellikle daha belirgindir.
+            </p>
+
+            <p class="reference">
+                <strong>Kaynak:</strong> Mantzios, K., Ioannou, L. G., Panagiotaki, Z., Ziaka, S., Périard, J. D., Racinais, S., ... & Flouris, A. D. (2021). Effects of weather parameters on endurance running performance: discipline-specific analysis of 1258 races. Medicine and Science in Sports and Exercise.
+            </p>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Hava Koşullarına Göre Giyim Önerileri</h2>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="card p-5 border rounded-lg bg-red-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-temperature-high text-2xl text-red-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Sıcak Hava (25°C+)</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Hafif, açık renkli ve nefes alabilen kumaşlar</li>
+                        <li>Ter emici ve çabuk kuruyan kumaşlar (polyester, polipropilen)</li>
+                        <li>Güneş koruyucu şapka/vizör</li>
+                        <li>UV korumalı güneş gözlüğü</li>
+                        <li>Kısa kollu ve ince taytlar/şortlar</li>
+                        <li>Vücut ısısını düşürmek için soğutma boyunlukları</li>
+                    </ul>
+                </div>
+                
+                <div class="card p-5 border rounded-lg bg-yellow-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-sun text-2xl text-yellow-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Ilıman Hava (15-25°C)</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Kısa kollu veya uzun kollu hafif tişörtler</li>
+                        <li>Şort veya 3/4 taytlar</li>
+                        <li>Güneş koruyucu aksesuarlar</li>
+                        <li>Ter emici ve nefes alabilen kumaşlar</li>
+                        <li>İnce ve hafif rüzgarlık (sabah/akşam için)</li>
+                    </ul>
+                </div>
+
+                <div class="card p-5 border rounded-lg bg-green-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-cloud-sun text-2xl text-green-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Serin Hava (5-15°C)</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Katmanlı giyim (hafif termal iç giyim + dış katman)</li>
+                        <li>Uzun kollu, hafif fleece/termal üst giyim</li>
+                        <li>Uzun tayt veya hafif pantolon</li>
+                        <li>İnce eldiven ve bere/bandana</li>
+                        <li>Rüzgar kırıcı yelek veya ince ceket</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card p-5 border rounded-lg bg-blue-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-snowflake text-2xl text-blue-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Soğuk Hava (0-5°C)</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Üç katmanlı giyim (termal iç giyim + orta katman + dış katman)</li>
+                        <li>Termal uzun kollu iç giyim</li>
+                        <li>Orta katman olarak fleece/termal üst</li>
+                        <li>Rüzgar ve su geçirmeyen ceket</li>
+                        <li>Termal uzun tayt</li>
+                        <li>Eldiven, bere ve boyunluk</li>
+                        <li>Termal çorap</li>
+                    </ul>
+                </div>
+
+                <div class="card p-5 border rounded-lg bg-indigo-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-icicles text-2xl text-indigo-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Çok Soğuk Hava (0°C altı)</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Özel termal iç giyim (merino yün veya sentetik)</li>
+                        <li>Kalın orta katman (polar veya yün)</li>
+                        <li>Rüzgar ve su geçirmeyen kalın dış katman</li>
+                        <li>Termal kalın tayt (gerekirse çift kat)</li>
+                        <li>Termal eldiven, kulak ve yüzü kaplayan bere</li>
+                        <li>Termal çorap (gerekirse çift kat)</li>
+                        <li>Reflektörlü ve görünürlüğü yüksek kıyafetler (erken karanlıkta koşmak için)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Yağmurlu ve Rüzgarlı Havalar için Öneriler</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card p-5 border rounded-lg bg-blue-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-cloud-rain text-2xl text-blue-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Yağmurlu Havalar</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Hafif ve nefes alabilen su geçirmez ceket</li>
+                        <li>Su geçirmez şapka veya kapüşon</li>
+                        <li>Hızlı kuruyan kumaşlardan iç katman</li>
+                        <li>Su geçirmez özelliklere sahip ayakkabılar</li>
+                        <li>Su tutmayan taytlar veya pantolon</li>
+                        <li>Anti-blister çoraplar (su nedeniyle kabarcık oluşumunu önlemek için)</li>
+                        <li>Yağmura dirençli gözlük (ihtiyaç halinde)</li>
+                    </ul>
+                </div>
+
+                <div class="card p-5 border rounded-lg bg-gray-50">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-wind text-2xl text-gray-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">Rüzgarlı Havalar</h3>
+                    </div>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Rüzgar geçirmeyen hafif ceket/yelek</li>
+                        <li>Katmanlı giyim (vücut ısısını korumak için)</li>
+                        <li>Rüzgar kesici bere veya bandana</li>
+                        <li>Vücuda oturan kıyafetler (rüzgar direncini azaltmak için)</li>
+                        <li>Göz koruması için rüzgar dirençli gözlükler</li>
+                        <li>Kompresyon giysiler (hem ısı koruması hem rüzgar direnci için)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 p-4 rounded-lg mt-6">
+                <p class="font-medium"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>İpucu:</p>
+                <p>
+                    Değişken hava koşullarında katmanlı giyim stratejisi uygulayın. Böylece koşu sırasında vücut ısınız arttıkça veya hava koşulları değiştikçe katmanları çıkarabilirsiniz. Hafif ve kompakt bir yelek veya rüzgarlığı bel çantanızda taşıyabilir, gerektiğinde kullanabilirsiniz.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Mesafeye ve Tempoya Göre Giyim Önerileri</h2>
+            
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-3 text-purple-800"><i class="fas fa-bolt mr-2"></i>Kısa Mesafe/Hızlı Tempo (400m-5km)</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-medium mb-2">Özellikler:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Yüksek yoğunluklu, kısa süreli efor</li>
+                            <li>Hızlı tempo ve yüksek adım frekansı</li>
+                            <li>Kısa sürede yüksek vücut ısısı</li>
+                            <li>Genellikle pist veya düz yolda koşulur</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Giyim Önerileri:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Hafif, vücuda oturan giysiler</li>
+                            <li>Aerodinamik performans kıyafetleri</li>
+                            <li>Minimal ayakkabılar</li>
+                            <li>Gerekirse kompresyon kıyafetler</li>
+                            <li>Ter hızlı uzaklaştırma özelliği olan kumaşlar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-3 text-blue-800"><i class="fas fa-running mr-2"></i>Orta Mesafe/Orta Tempo (5km-21km)</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-medium mb-2">Özellikler:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Orta yoğunluklu, uzun süreli efor</li>
+                            <li>Dengeli tempo ve adım frekansı</li>
+                            <li>Sabit vücut ısısı ve sürekli terleme</li>
+                            <li>Değişken zemin ve koşullar</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Giyim Önerileri:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Konforlu, rahat giysiler</li>
+                            <li>Nem transferi yüksek kumaşlar</li>
+                            <li>Destekleyici ve hafif ayakkabılar</li>
+                            <li>Gerekirse antrenman izleme aksesuarları</li>
+                            <li>Hava koşullarına göre uyarlanmış katmanlı giyim</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-3 text-green-800"><i class="fas fa-road mr-2"></i>Uzun Mesafe/Dayanıklılık (Maraton+)</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-medium mb-2">Özellikler:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Düşük-orta yoğunluklu, çok uzun süreli efor</li>
+                            <li>Ekonomik tempo ve adım frekansı</li>
+                            <li>Uzun süre termal düzenleme gerektiren efor</li>
+                            <li>Çok değişken koşullar ve saatlerce hareket</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Giyim Önerileri:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Maximum konfor sağlayan giysiler</li>
+                            <li>Anti-sürtünme özelliklere sahip kumaşlar</li>
+                            <li>Yastıklaması iyi, destekleyici ayakkabılar</li>
+                            <li>Güneş koruma, hidrasyon taşıma ekipmanları</li>
+                            <li>Hava değişimlerine uyarlanabilir katmanlı giyim</li>
+                            <li>Uzun mesafe için özel dikişsiz çoraplar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <section class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-4 section-header">Yol Koşusu İçin Özel Giyim Önerileri</h2>
+                <p class="mb-4">
+                    Yol koşusu genellikle düz ve sert zeminlerde gerçekleştirilir. Bu nedenle giyim seçiminiz daha çok hız ve konfor odaklı olmalıdır.
+                </p>
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-tshirt mr-2 text-blue-500"></i>Üst Giyim</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Hafif ve nefes alabilen malzemeden yapılmış tişörtler veya atletler</li>
+                            <li>Gövdeye yapışan ve fazla sallanmayan modeller</li>
+                            <li>Uzun mesafelerde sürtünmeyi azaltan dikişsiz modeller</li>
+                            <li>Soğuk havalarda rüzgarı kesen hafif ceketler</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-socks mr-2 text-blue-500"></i>Alt Giyim</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Hafif ve esnek şortlar veya taytlar</li>
+                            <li>Yüksek elastikiyet sağlayan kumaşlar</li>
+                            <li>İç bacak sürtünmesini önleyen modeller</li>
+                            <li>Sıcak havalarda nemi hızlıca uzaklaştıran şortlar</li>
+                            <li>Soğuk havalarda termal taytlar</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-shoe-prints mr-2 text-blue-500"></i>Ayakkabılar</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Asfalt ve sert zeminlere uygun yastıklamalı koşu ayakkabıları</li>
+                            <li>Hafif ve hızlı koşu için minimal drop'lu modeller</li>
+                            <li>İyi darbe emici özelliğe sahip taban</li>
+                            <li>Ayağı sarmayan, nefes alabilen üst kısım</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-hat-cowboy mr-2 text-blue-500"></i>Aksesuarlar</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Koşu şapkası veya vizör (güneşli havalarda)</li>
+                            <li>UV korumalı koşu gözlükleri</li>
+                            <li>Bel çantası veya kol bandı</li>
+                            <li>Reflektörlü bantlar (düşük ışık koşullarında)</li>
+                            <li>Koşu saati ve performans takip cihazları</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-4 section-header">Trail Koşusu İçin Özel Giyim Önerileri</h2>
+                <p class="mb-4">
+                    Trail koşusu doğal arazi, dağ ve ormanlık alanlarda gerçekleştirilir. Bu nedenle giyim seçiminiz daha çok dayanıklılık ve koruma odaklı olmalıdır.
+                </p>
+                <div class="space-y-4">
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-tshirt mr-2 text-green-500"></i>Üst Giyim</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Dayanıklı ve yırtılmaya karşı dirençli kumaşlar</li>
+                            <li>Hafif ve taşınabilir yağmurluk</li>
+                            <li>UV koruma sağlayan uzun kollu tişörtler</li>
+                            <li>Katmanlı giyim için uygun, değişken koşullara adapte olan üstler</li>
+                            <li>Dayanıklı çok cepli yelek veya hidrasyon paketi taşıma yeleği</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-socks mr-2 text-green-500"></i>Alt Giyim</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Dayanıklı ve çizilmeye dirençli kumaşlar</li>
+                            <li>Su geçirmez veya hızlı kuruyan modeller</li>
+                            <li>Geniş hareket alanı sağlayan esnek taytlar</li>
+                            <li>Uzun mesafeler için sürtünme korumalı şortlar</li>
+                            <li>Çamur ve su geçirmeyen pantolon/tozluklar</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-shoe-prints mr-2 text-green-500"></i>Ayakkabılar</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Derin dişli, kavrama sağlayan trail koşu ayakkabıları</li>
+                            <li>Su geçirmez veya hızlı kuruyan özellikte</li>
+                            <li>Ayak bileği desteği sağlayan modeller (uzun ve teknik patikalarda)</li>
+                            <li>Kayalık ve taşlı zeminde ayağı koruyan takviyeler</li>
+                            <li>Çamur ve su için drenaj sistemli ayakkabılar</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <h3 class="font-semibold"><i class="fas fa-hat-cowboy mr-2 text-green-500"></i>Aksesuarlar</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>Geniş siperlikli şapka (güneş ve dallardan koruma için)</li>
+                            <li>Buff/Bandana (çok amaçlı kullanım için)</li>
+                            <li>Hidrasyon paketi veya koşu sırt çantası</li>
+                            <li>Koşu batonu (dik iniş ve çıkışlar için)</li>
+                            <li>Trail koşu tozlukları (taş, çamur ve bitki kalıntılarından koruma için)</li>
+                            <li>Kafa lambası (uzun mesafeler ve karanlıkta koşu için)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Malzeme ve Kumaş Türleri</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 border-b pb-2">Sentetik Kumaşlar</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <strong>Polyester:</strong> 
+                            <p class="text-sm">En yaygın kullanılan sentetik kumaşlardan biridir. Nemi hızla vücuttan uzaklaştırır, çabuk kurur ve dayanıklıdır. Sıcak ve soğuk koşullarda kullanılabilir.</p>
+                        </li>
+                        <li>
+                            <strong>Polipropilen:</strong> 
+                            <p class="text-sm">Mükemmel nem yönetimi sağlar, çok hafiftir ve yalıtım özellikleri vardır. Özellikle iç katman olarak kullanılır.</p>
+                        </li>
+                        <li>
+                            <strong>Naylon:</strong> 
+                            <p class="text-sm">Dayanıklı ve esnektir. Rüzgar ve aşınmaya karşı dayanıklılık gerektiren trail koşusu giysilerinde tercih edilir.</p>
+                        </li>
+                        <li>
+                            <strong>Spandex/Elastan:</strong> 
+                            <p class="text-sm">Yüksek esneklik sağlar. Genellikle diğer kumaşlarla karıştırılarak hareket serbestliği arttırılır.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 border-b pb-2">Doğal ve Karışım Kumaşlar</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <strong>Merino Yünü:</strong> 
+                            <p class="text-sm">Doğal nem yönetimi sağlar, koku yapmaz ve sıcaklık ayarlamasında mükemmeldir. Soğuk hava koşulları için ideal bir iç katman malzemesidir.</p>
+                        </li>
+                        <li>
+                            <strong>Bambu:</strong> 
+                            <p class="text-sm">Antibakteriyel özellikleri vardır, nefes alır ve çevre dostudur. Genellikle sentetik kumaşlarla karıştırılır.</p>
+                        </li>
+                        <li>
+                            <strong>Polyester-Pamuk Karışımları:</strong> 
+                            <p class="text-sm">Konforlu ve dayanıklıdır. Hafif antrenmanlar veya günlük kullanım için uygundur ancak yüksek performans gerektiren koşularda tercih edilmez.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold mb-3 border-b pb-2">Teknolojik Kumaşlar</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <ul class="space-y-3">
+                        <li>
+                            <strong>Gore-Tex:</strong> 
+                            <p class="text-sm">Su geçirmez, rüzgar geçirmez ancak nefes alabilen bir membran teknolojisidir. Yağmurlu ve rüzgarlı koşullarda tercih edilir.</p>
+                        </li>
+                        <li>
+                            <strong>Dri-FIT (Nike):</strong> 
+                            <p class="text-sm">Teri hızla yüzeyden uzaklaştıran ve buharlaşmasını hızlandıran polyester tabanlı bir teknolojidir.</p>
+                        </li>
+                        <li>
+                            <strong>CoolMax:</strong> 
+                            <p class="text-sm">Nem yönetimi için tasarlanmış özel polyester iplikleridir. Sıcak havalarda vücudu serin tutmak için idealdir.</p>
+                        </li>
+                    </ul>
+                    <ul class="space-y-3">
+                        <li>
+                            <strong>HeatGear (Under Armour):</strong> 
+                            <p class="text-sm">Sıcak havalarda vücudu serin tutmak için tasarlanmış hafif, nefes alabilen kumaş teknolojisi.</p>
+                        </li>
+                        <li>
+                            <strong>ColdGear (Under Armour):</strong> 
+                            <p class="text-sm">Soğuk havalarda vücut ısısını korumak için tasarlanmış çift katmanlı teknoloji.</p>
+                        </li>
+                        <li>
+                            <strong>X-Static:</strong> 
+                            <p class="text-sm">Gümüş iplikler içeren, koku yapmayan ve antibakteriyel özelliğe sahip kumaş teknolojisi.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Bilimsel Araştırmalardan Bulgular</h2>
+            
+            <div class="space-y-6">
+                <div class="p-4 border-l-4 border-blue-500 bg-blue-50">
+                    <h3 class="font-semibold mb-2">Sıcaklığın Koşu Performansına Etkisi</h3>
+                    <p class="text-sm mb-2">
+                        Medicine & Science in Sports & Exercise dergisinde yayınlanan bir araştırma, optimum koşu performansı için 7.5°C–15°C WBGT (ıslak termometre bilyeli sıcaklık) veya 10°C–17.5°C hava sıcaklığı aralığının ideal olduğunu göstermiştir. Bu aralığın dışındaki her 1°C sıcaklık değişimi performansı yaklaşık %0.3–0.4 oranında düşürmektedir.
+                    </p>
+                    <p class="text-xs italic">Kaynak: Mantzios, K., Ioannou, L. G., Panagiotaki, Z., et al. (2021). Effects of weather parameters on endurance running performance: discipline-specific analysis of 1258 races. Medicine and Science in Sports and Exercise.</p>
+                </div>
+
+                <div class="p-4 border-l-4 border-green-500 bg-green-50">
+                    <h3 class="font-semibold mb-2">Koşu Giysileri ve Termoregülasyon</h3>
+                    <p class="text-sm mb-2">
+                        Yapılan araştırmalar, nefes alabilen ve nem yönetimi sağlayan kumaşların, vücut sıcaklığını dengede tutmada önemli rol oynadığını göstermektedir. Polyester gibi sentetik kumaşlar, teri vücuttan uzaklaştırma ve buharlaştırma konusunda pamuklu kumaşlardan daha etkilidir. Bu sayede vücut ısısının düzenlenmesine yardımcı olur ve performansı artırır.
+                    </p>
+                    <p class="text-xs italic">Kaynak: Çivitci, Ş., Dengin, S. (2014). Koşu Giysileri Konforunun Kullanıcılar Tarafından Değerlendirilmesi Üzerine Bir Araştırma. International Journal of Science Culture and Sport, 553-569.</p>
+                </div>
+
+                <div class="p-4 border-l-4 border-purple-500 bg-purple-50">
+                    <h3 class="font-semibold mb-2">Kompresyon Giysilerinin Etkisi</h3>
+                    <p class="text-sm mb-2">
+                        European Journal of Sport Science dergisinde yayınlanan bir çalışma, kompresyon çorapları ve taytların özellikle uzun mesafe trail koşusunda kas titreşimini azaltabileceğini, kan dolaşımını iyileştirebileceğini ve kas hasarını azaltabileceğini göstermiştir. Bu etkiler, özellikle yarış sonrası toparlanma sürecinde daha belirgin olabilir.
+                    </p>
+                    <p class="text-xs italic">Kaynak: Vercruyssen, F., Easthope, C., Bernard, T., et al. (2014). The influence of wearing compression stockings on performance indicators and physiological responses following a prolonged trail running exercise. European Journal of Sport Science, 14(2), 144-150.</p>
+                </div>
+
+                <div class="p-4 border-l-4 border-red-500 bg-red-50">
+                    <h3 class="font-semibold mb-2">Trail Koşusu ve Vücut Isısı Yönetimi</h3>
+                    <p class="text-sm mb-2">
+                        Trail koşusu sırasında vücut ısısı yönetimi, değişken arazi ve hava koşulları nedeniyle özel bir öneme sahiptir. Clinical Journal of Sport Medicine dergisinde yayınlanan bir araştırma, uzun mesafe trail koşucularında vücut ısısının metabolik hızla ilişkili olduğunu ve uygun hidrasyon ile giyim stratejilerinin hipertermi riskini azaltabileceğini göstermiştir.
+                    </p>
+                    <p class="text-xs italic">Kaynak: Singh, N.R., Denissen, E.C., McKune, A.J., et al. (2012). Intestinal Temperature, Heart Rate, and Hydration Status in Multiday Trail Runners. Clinical Journal of Sport Medicine, 22(4), 311-318.</p>
+                </div>
+
+                <div class="p-4 border-l-4 border-yellow-500 bg-yellow-50">
+                    <h3 class="font-semibold mb-2">Yeni Teknolojik Gelişmeler</h3>
+                    <p class="text-sm mb-2">
+                        Son yıllarda, koşu giysilerinde "akıllı tekstil" uygulamaları geliştirilmektedir. Bu teknolojiler, vücut sıcaklığına göre kumaş yapısını değiştirebilen, UV koruma sağlayan, antibakteriyel özelliklere sahip ve hatta koşucu performansını gerçek zamanlı olarak izleyebilen sensörler içeren giysiler içermektedir.
+                    </p>
+                    <p class="text-xs italic">Kaynak: Kanat, Z.E. (2023). Teknik ve Akıllı Tekstillerin Spor Giysi Tasarımında Kullanımı. Turkish Journal of Fashion Design and Management.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 section-header">Öneriler ve Sonuç</h2>
+            
+            <div class="space-y-4">
+                <p>
+                    Koşu için doğru giyim seçimi yapmak, hem performansınızı artıracak hem de deneyiminizi daha keyifli hale getirecektir. Bilimsel araştırmalar, koşu performansının hava koşulları ve giyim tercihleri ile doğrudan ilişkili olduğunu göstermektedir.
+                </p>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">Temel Öneriler</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Her zaman hava koşullarına göre giyinin; 10°C–17.5°C hava sıcaklığı aralığının koşu performansı için ideal olduğunu unutmayın.</li>
+                        <li>Katmanlı giyim stratejisi uygulayın; böylece değişen koşullara adapte olabilirsiniz.</li>
+                        <li>Antrenman tipi ve süresine göre giyim seçimi yapın; kısa ve hızlı koşularda hafif ve aerodinamik, uzun koşularda konforlu ve dayanıklı giysileri tercih edin.</li>
+                        <li>Trail koşusunda ekstra koruma sağlayan ve dayanıklı malzemeler tercih edin; yol koşusunda ise hafiflik ve konfor odaklı giyinin.</li>
+                        <li>Nem yönetimi yapabilen kumaşlardan yapılmış giysiler tercih edin; pamuk yerine sentetik veya özel karışım kumaşlar kullanın.</li>
+                    </ul>
+                </div>
+                
+                <p>
+                    Unutmayın ki doğru giyim seçimi, sadece performansınızı artırmakla kalmaz, aynı zamanda sakatlanma riskini azaltır ve koşu deneyiminizi daha keyifli hale getirir. Koşu giysileri seçerken hem bilimsel araştırmaları göz önünde bulundurmak hem de kendi vücudunuzu tanımak ve ihtiyaçlarınızı belirlemek önemlidir.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-4 section-header">Kaynakça</h2>
+            
+            <div class="space-y-3 text-sm">
+                <p class="reference">
+                    1. Mantzios, K., Ioannou, L. G., Panagiotaki, Z., Ziaka, S., Périard, J. D., Racinais, S., ... & Flouris, A. D. (2021). Effects of weather parameters on endurance running performance: discipline-specific analysis of 1258 races. Medicine and Science in Sports and Exercise.
+                </p>
+                <p class="reference">
+                    2. Çivitci, Ş., Dengin, S. (2014). Koşu Giysileri Konforunun Kullanıcılar Tarafından Değerlendirilmesi Üzerine Bir Araştırma. International Journal of Science Culture and Sport, 553-569.
+                </p>
+                <p class="reference">
+                    3. Singh, N.R., Denissen, E.C., McKune, A.J., et al. (2012). Intestinal Temperature, Heart Rate, and Hydration Status in Multiday Trail Runners. Clinical Journal of Sport Medicine, 22(4), 311-318.
+                </p>
+                <p class="reference">
+                    4. Vercruyssen, F., Easthope, C., Bernard, T., et al. (2014). The influence of wearing compression stockings on performance indicators and physiological responses following a prolonged trail running exercise. European Journal of Sport Science, 14(2), 144-150.
+                </p>
+                <p class="reference">
+                    5. Jiao, J. (2014). Effects of clothing on running physiology and performance in a hot condition. The Hong Kong Polytechnic University.
+                </p>
+                <p class="reference">
+                    6. Kanat, Z.E. (2023). Teknik ve Akıllı Tekstillerin Spor Giysi Tasarımında Kullanımı. Turkish Journal of Fashion Design and Management.
+                </p>
+                <p class="reference">
+                    7. Parise, C.A., Hoffman, M.D. (2011). Influence of temperature and performance level on pacing a 161 km trail ultramarathon. International Journal of Sports Physiology and Performance, 6(2), 243-251.
+                </p>
+                <p class="reference">
+                    8. El Helou, N., Tafflet, M., Berthelot, G., et al. (2012). Impact of environmental parameters on marathon running performance. PloS one, 7(5), e37407.
+                </p>
+                <p class="reference">
+                    9. Bouscaren, N., Millet, G.Y., Racinais, S. (2019). Heat stress challenges in marathon vs. ultra-endurance running. Frontiers in Sports and Active Living.
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Ümit Emre Erdoğan - Koşucular için Kılık Kıyafet Rehberi</p>
+            <p class="text-sm mt-2">Bu rehber koşucular için hazırlanmış bilimsel bir kılavuzdur. Her koşucu kendi özel ihtiyaçları ve tercihlerine göre bu önerileri değerlendirmelidir.</p>
         </div>
     </footer>
 
     <script>
-        // Güç Dağılımı Grafiği
-        const ctx = document.getElementById('powerChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Sprint (10sn)', 'Anaerobik (1dk)', 'VO2 Max (5dk)', 'FTP (1 saat)', 'Ortalama (Etap)'],
-                datasets: [{
-                    label: 'Tour Bisikletçisi (watt)',
-                    data: [1600, 800, 500, 400, 325],
-                    backgroundColor: '#002395',
-                    borderColor: '#002395',
-                    borderWidth: 1
-                }, {
-                    label: 'Amatör Bisikletçi (watt)',
-                    data: [900, 450, 320, 250, 170],
-                    backgroundColor: '#ED2939',
-                    borderColor: '#ED2939',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Güç (watt)'
+        // İnteraktif kıyafet seçim aracı için JS
+        document.addEventListener('DOMContentLoaded', function() {
+            const tempSlider = document.getElementById('temperature');
+            const tempValue = document.getElementById('tempValue');
+            const weatherButtons = document.querySelectorAll('.weather-btn');
+            const runTypeButtons = document.querySelectorAll('.run-type-btn');
+            const workoutButtons = document.querySelectorAll('.workout-btn');
+            
+            // Çıktı alanları
+            const upperClothing = document.getElementById('upperClothing');
+            const lowerClothing = document.getElementById('lowerClothing');
+            const footwear = document.getElementById('footwear');
+            const accessories = document.getElementById('accessories');
+            const notes = document.getElementById('notes');
+            
+            // Varsayılan değerler
+            let currentTemp = 15;
+            let currentWeather = 'sunny';
+            let currentRunType = 'road';
+            let currentWorkout = 'short';
+            
+            // Seçimleri izle ve güncelle
+            tempSlider.addEventListener('input', function() {
+                currentTemp = parseInt(this.value);
+                tempValue.textContent = currentTemp;
+                updateClothingRecommendations();
+            });
+            
+            // Buton seçimleri için
+            weatherButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    weatherButtons.forEach(b => b.classList.remove('active', 'bg-blue-300'));
+                    this.classList.add('active', 'bg-blue-300');
+                    currentWeather = this.getAttribute('data-weather');
+                    updateClothingRecommendations();
+                });
+            });
+            
+            runTypeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    runTypeButtons.forEach(b => b.classList.remove('active', 'bg-blue-300'));
+                    this.classList.add('active', 'bg-blue-300');
+                    currentRunType = this.getAttribute('data-type');
+                    updateClothingRecommendations();
+                });
+            });
+            
+            workoutButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    workoutButtons.forEach(b => b.classList.remove('active', 'bg-blue-300'));
+                    this.classList.add('active', 'bg-blue-300');
+                    currentWorkout = this.getAttribute('data-workout');
+                    updateClothingRecommendations();
+                });
+            });
+            
+            // Kıyafet önerilerini güncelleme fonksiyonu
+            function updateClothingRecommendations() {
+                // Sıcak hava (25°C+)
+                if (currentTemp >= 25) {
+                    if (currentRunType === 'road') {
+                        upperClothing.textContent = "Hafif ve nefes alabilen koşu atleti veya kısa kollu tişört";
+                        lowerClothing.textContent = "Hafif koşu şortu veya kısa tayt";
+                        footwear.textContent = "Hafif, nefes alabilen yol koşu ayakkabısı";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Koşu şapkası, güneş gözlüğü, güneş kremi";
+                            notes.textContent = "Aşırı sıcak havada performans düşüklüğüne dikkat edin. Vücut sıcaklığını düşük tutmak için açık renkli giysiler tercih edin. Bol su tüketin.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez hafif şapka/kapüşon, hafif yağmurluk";
+                            notes.textContent = "Sıcak ve yağmurlu havalarda fazla katmanlardan kaçının. Nefes alabilen su geçirmez ekipmanları tercih edin.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Hafif rüzgarlık/yelek, güneş gözlüğü";
+                            notes.textContent = "Sıcak ve rüzgarlı havada, vücuda oturan kıyafetler rüzgar direncini azaltacaktır.";
                         }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Efor Tipi ve Süresi'
+                    } else { // trail
+                        upperClothing.textContent = "UV korumalı, hafif ve nefes alabilen uzun/kısa kollu tişört";
+                        lowerClothing.textContent = "Dayanıklı, hızlı kuruyan koşu şortu veya tayt";
+                        footwear.textContent = "Kavraması iyi, havalandırmalı trail koşu ayakkabısı";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Geniş siperlikli şapka, güneş gözlüğü, güneş kremi, hidrasyon yeleği/çantası";
+                            notes.textContent = "Doğada güneş etkilerine karşı ekstra koruma sağlayın. Kolları kapatmak için uzun kollu hafif üst giyim düşünün.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez hafif şapka, yağmurluk, hidrasyon yeleği";
+                            notes.textContent = "Trail koşusunda yağmur riski her zaman vardır. Hafif, paketlenebilir bir yağmurluk taşımak önemlidir.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Hafif rüzgarlık, güneş gözlüğü, buff/bandana, hidrasyon yeleği";
+                            notes.textContent = "Açık arazide rüzgar daha şiddetli hissedilebilir. Küçük ve hafif bir rüzgarlık taşıyın.";
                         }
                     }
                 }
+                // Ilıman hava (15-25°C)
+                else if (currentTemp >= 15 && currentTemp < 25) {
+                    if (currentRunType === 'road') {
+                        upperClothing.textContent = "Hafif, nefes alabilen kısa kollu tişört";
+                        lowerClothing.textContent = "Hafif koşu şortu veya yarım/tam tayt";
+                        footwear.textContent = "Hafif, nefes alabilen yol koşu ayakkabısı";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Koşu şapkası, güneş gözlüğü";
+                            notes.textContent = "Ilıman hava için ideal koşu şartları. Hafif ve nefes alabilen kıyafetler tercih edin.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez hafif şapka, ince yağmurluk/rüzgarlık";
+                            notes.textContent = "Yağmurda hızlı kuruyan, su tutmayan kumaşlardan yapılmış kıyafetler tercih edin.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "İnce rüzgarlık/yelek";
+                            notes.textContent = "Rüzgarlı ve ılıman havada, rüzgar geçirmeyen ancak nefes alabilen üst giyim tercih edin.";
+                        }
+                    } else { // trail
+                        upperClothing.textContent = "Nefes alabilen, dayanıklı uzun/kısa kollu tişört";
+                        lowerClothing.textContent = "Esnek ve dayanıklı koşu taytı veya şortu";
+                        footwear.textContent = "Dışlı tabana sahip trail koşu ayakkabısı";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Şapka, güneş gözlüğü, hidrasyon yeleği/çantası";
+                            notes.textContent = "Trail koşusunda ılıman hava ideal koşullar sağlar, ancak her zaman ekstra katman taşıyın.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket, şapka, hidrasyon yeleği";
+                            notes.textContent = "Islanma durumunda da termal koruma sağlayan kumaşlar tercih edin. Yedek kuru çorap bulundurun.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez ceket/yelek, buff/bandana, hidrasyon yeleği";
+                            notes.textContent = "Özellikle yüksek rakımlarda hava koşulları hızla değişebilir. Katmanlı giyim stratejisi uygulayın.";
+                        }
+                    }
+                }
+                // Serin hava (5-15°C)
+                else if (currentTemp >= 5 && currentTemp < 15) {
+                    if (currentRunType === 'road') {
+                        upperClothing.textContent = "Uzun kollu hafif termal tişört, gerekirse ince bir üst katman";
+                        lowerClothing.textContent = "Koşu taytı";
+                        footwear.textContent = "Yol koşu ayakkabısı, termal çorap";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "İnce eldiven, hafif bere/bandana";
+                            notes.textContent = "Serin havada koşu performansı genellikle optimumdur. İlk 10-15 dakika üşüyebileceğinizi unutmayın.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket, eldiven, bere";
+                            notes.textContent = "Yağmur ve soğuk kombinasyonu tehlikeli olabilir. Su geçirmez ve sıcak tutan katmanlar gereklidir.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez ceket, eldiven, bere";
+                            notes.textContent = "Rüzgar, hissedilen sıcaklığı düşürebilir. Rüzgar kesici giysiler önemlidir.";
+                        }
+                    } else { // trail
+                        upperClothing.textContent = "Termal uzun kollu tişört, hafif softshell ceket";
+                        lowerClothing.textContent = "Uzun koşu taytı, gerekirse hafif softshell/su geçirmez pantolon";
+                        footwear.textContent = "Su geçirmez trail koşu ayakkabısı, termal çorap";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "İnce eldiven, bere/bandana, güneş gözlüğü, hidrasyon yeleği";
+                            notes.textContent = "Serin hava trail koşusu için idealdir ancak doğada hava koşulları aniden değişebilir. Ekstra katman bulundurun.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket, eldiven, bere, trail tozlukları";
+                            notes.textContent = "Islak koşullarda vücut ısısını korumak kritiktir. Su geçirmez ancak nefes alabilen dış katman tercih edin.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez ceket, eldiven, bere, buff/bandana";
+                            notes.textContent = "Açık arazide rüzgarın etkisi daha fazladır. Vücut ısısını koruyucu katmanlara önem verin.";
+                        }
+                    }
+                }
+                // Soğuk hava (0-5°C)
+                else if (currentTemp >= 0 && currentTemp < 5) {
+                    if (currentRunType === 'road') {
+                        upperClothing.textContent = "Termal iç giyim + orta katman + hafif ceket";
+                        lowerClothing.textContent = "Termal koşu taytı";
+                        footwear.textContent = "Yol koşu ayakkabısı, kalın termal çorap";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Termal eldiven, kalın bere, boyunluk";
+                            notes.textContent = "Soğuk havada koşarken ilk 1-2 km hafif üşüme hissetmeniz normaldir. Aşırı giyinmeyin.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket, su geçirmez eldiven, bere, yüz koruyucu";
+                            notes.textContent = "Soğuk ve ıslak koşullarda hipotermi riski vardır. Su geçirmez ve sıcak tutan katmanlar tercih edin.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez ceket, termal eldiven, yüz koruyucu bere/maske";
+                            notes.textContent = "Rüzgar, soğuk havada hissedilen sıcaklığı önemli ölçüde düşürür. Rüzgar geçirmez dış katman şarttır.";
+                        }
+                    } else { // trail
+                        upperClothing.textContent = "Termal iç giyim + orta polar katman + su/rüzgar geçirmez dış katman";
+                        lowerClothing.textContent = "Termal koşu taytı, gerekirse su geçirmez pantolon";
+                        footwear.textContent = "Su geçirmez trail koşu ayakkabısı, kalın termal çorap";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Termal eldiven, kalın bere, boyunluk, güneş gözlüğü, hidrasyon yeleği";
+                            notes.textContent = "Soğuk havada doğada koşarken ekstrem hava değişimlerine hazırlıklı olun. Ekstra katman ve acil durum battaniyesi taşıyın.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket ve eldiven, termal bere, yüz koruyucu, trail tozlukları, su geçirmez çanta";
+                            notes.textContent = "Soğuk ve ıslak trail koşusunda hipotermi riski yüksektir. Yedek kuru giysiler taşıyın.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez ceket, termal eldiven, bere, yüz koruyucu, tozluk";
+                            notes.textContent = "Soğuk ve rüzgarlı doğa koşularında katmanlı giyim hayati önem taşır. Koşu temponuzu ayarlayarak aşırı terlemeyi önleyin.";
+                        }
+                    }
+                }
+                // Çok soğuk hava (0°C altı)
+                else {
+                    if (currentRunType === 'road') {
+                        upperClothing.textContent = "Kalın termal iç giyim + polar orta katman + rüzgar/su geçirmez dış katman";
+                        lowerClothing.textContent = "Kalın termal tayt, gerekirse ikinci kat";
+                        footwear.textContent = "Kış koşu ayakkabısı/bot, kalın termal çorap";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Kalın termal eldiven, yüz ve kulak koruyucu bere, boyunluk, reflektörler";
+                            notes.textContent = "Çok soğuk havalarda koşu öncesi daha uzun ısınma yapın. Cilde açık alan bırakmayın.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez ceket ve pantolon, su geçirmez eldiven, kalın bere, yüz maskesi";
+                            notes.textContent = "Donma sıcaklığında yağmur ve karışık yağış tehlikelidir. Ekstrem koşullarda içeride koşmayı tercih edin.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez kalın ceket, termal kalın eldiven, yüz ve baş koruyucu, boyunluk";
+                            notes.textContent = "Rüzgar ve soğuk kombinasyonu donma riski oluşturur. Cildinizi tamamen kapatın ve koşu sürenizi kısaltın.";
+                        }
+                    } else { // trail
+                        upperClothing.textContent = "Kalın termal iç giyim + polar orta katman + kalın softshell/teknik dış katman";
+                        lowerClothing.textContent = "Kalın termal tayt, su geçirmez pantolon";
+                        footwear.textContent = "Yalıtımlı trail bot, kalın termal çorap (çift kat)";
+                        if (currentWeather === 'sunny') {
+                            accessories.textContent = "Kalın termal eldiven, yüz ve kulak koruyucu, güneş gözlüğü, termoslu hidrasyon sistemi";
+                            notes.textContent = "Kış trail koşusunda güvenlik ekipmanı taşımanız çok önemlidir. Acil durum battaniyesi, ışık, telefon ve ekstra giysi bulundurun.";
+                        } else if (currentWeather === 'rainy') {
+                            accessories.textContent = "Su geçirmez kış ceketi, su geçirmez eldiven, tam kapalı bere, yüz koruyucu, tozluklar";
+                            notes.textContent = "Bu koşullarda trail koşusu tehlikeli olabilir. Grup halinde koşmayı tercih edin ve mutlaka acil durum ekipmanı taşıyın.";
+                        } else if (currentWeather === 'windy') {
+                            accessories.textContent = "Rüzgar geçirmez teknik ceket, termal eldiven, balaklava, gözlük, reflektörler";
+                            notes.textContent = "Eksi sıcaklık ve rüzgar kombinasyonu ciddi donma riski oluşturur. Deneyimli değilseniz kaçının.";
+                        }
+                    }
+                }
+                
+                // Antrenman tipine göre ayarlamalar
+                if (currentWorkout === 'short') { // Kısa/Hızlı
+                    if (currentTemp >= 15) { // Sıcak/ılıman havada
+                        upperClothing.textContent += ". Tercihen aerodinamik ve hafif performans kıyafeti";
+                        lowerClothing.textContent += ". Daha kısa ve hafif modeller";
+                    }
+                    notes.textContent += " Kısa ve yüksek tempolu antrenmanlar için hafif ve aerodinamik kıyafetler tercih edin.";
+                } else if (currentWorkout === 'medium') { // Orta Mesafe
+                    notes.textContent += " Orta mesafe koşularında konfor ve performans dengesine önem verin.";
+                } else if (currentWorkout === 'long') { // Uzun Mesafe
+                    if (currentRunType === 'road') {
+                        notes.textContent += " Uzun mesafe koşularında sürtünmeyi azaltan, dikişsiz modeller tercih edin. Hidrasyon taşıma çözümleri ekleyin.";
+                    } else {
+                        notes.textContent += " Uzun trail koşularında ekstra ekipman, hidrasyon ve yedek giysi taşımak önemlidir.";
+                    }
+                    accessories.textContent += ", anti-sürtünme krem, ekstra çorap";
+                }
+                
+                // Sonuç animasyonu için
+                const resultCards = document.querySelectorAll('.result-card');
+                resultCards.forEach(card => {
+                    card.classList.remove('active');
+                    setTimeout(() => {
+                        card.classList.add('active');
+                    }, 100);
+                });
             }
+            
+            // Sayfa yüklendiğinde varsayılan önerileri göster
+            updateClothingRecommendations();
         });
     </script>
 </body>
 </html>
     <script id="html_badge_script1">
         window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDr%2BHpCBvLkBUZHewvu5ZnbTfxfUyzsUZSHZE%2BJfEj8cvNM6Xcl0iJUP%2FWlQ7mNV%2Bg2rirAPUszGhVEueYHSxhgO9qgB9nEsfJL5qS1AaHobEetlGJ1mfg5IpAuk2QzDBLKymZqUJdkRfXy0vjwFuEnD44r9w5VZFBIh5PWpnKWAuopMhVIiAymuZN3mnYrWYm4xhEOcfSOFc8t46a3C6jEWu89NB5GIMXnK8POv%2FLRZOtHVSI%2BTs7KI7HD79mW3Oz0WgOW9bDM5c8q%2FVeF%2Fsy6QE2nfHUtDOVqrL8p6W41bNO7aX34SziV4WdqH5ZZ15Wj%2B83aSC5lvkyWcv8x5XjLzcbLZNrVJk78VRlFzaFWENBt%2BR0U8jaWJ8mSvu84V17x0u8GJ3ywzk%2BCD41fgXv7QoxL3HURz0refqICf3wf614fJJM3elXS19w3opDL%2FLw64Oh1YX70mnH7Cm0pW9x7GezrVjQNMnbAfOAYb%2BZrtXAPcOtY0FG%2FpmD8sgD%2F%2FgNHICf0I12VTGVZDSdNQaTAk%3D";
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDit4wLCdPf4VqwdMrWrTXq9byekgw1Klqqkp2Q7kiPfqfwdRaEn3rgFnWrAQMqjZALimgBbk4uGL0gC0GS7V4mUrkiOUYcAQ%2Fbn%2FilTXEfyvBjgEhCgGlEBWtdcf%2BLU5CxdEkBPOzI8jRfdJFTTT%2Fir1NxDQ%2BTNDI%2FhDDs1XaIbWUeXBWsz%2Fm0v9fzMGSaopWXaS50F1hDiaH7sSz2%2BGJoOMiy%2BCumPLoetIU%2FhOIlzeggBVNiaTGel134Qn7kbOGjGdUGvQJI45ZI46lGIcXw2s%2FfjmAdFTIUoHKK68EbbSWUfFgnKZDMl%2FFJ0oj2qikb%2F6R0Giau6He6uJhTk%2F4WSTK1IJxcZJytQxrthAVIurmq8Px6cRpzbGCp49fsJkr5symbyxUA%2BczoIWKx8VdloXhJAgmjYDr%2BkPEhZd%2Bo%2B%2BIOnWI%2F%2F9UMSGPDDOP33u8%2BoN5MVGRD6ojgYfnq8nm1OyNu2bwnG6kfGbLQefGuO41KM0FMt2sM8WbnO2FzdJWKviHShGmkAtHsAeLmUUFT9K1I0dBmcbrk8XrM5Q8ku3";
         window.__genspark_locale = "en-US";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDr+HpCBvLkBUZHewvu5ZnbTfxfUyzsUZSHZE+JfEj8cvNM6Xcl0iJUP/WlQ7mNV+g2rirAPUszGhVEueYHSxhgO9qgB9nEsfJL5qS1AaHobEetlGJ1mfg5IpAuk2QzDBLKymZqUJdkRfXy0vjwFuEnD44r9w5VZFBIh5PWpnKWAuopMhVIiAymuZN3mnYrWYm4xhEOcfSOFc8t46a3C6jEWu89NB5GIMXnK8POv/LRZOtHVSI+Ts7KI7HD79mW3Oz0WgOW9bDM5c8q/VeF/sy6QE2nfHUtDOVqrL8p6W41bNO7aX34SziV4WdqH5ZZ15Wj+83aSC5lvkyWcv8x5XjLzcbLZNrVJk78VRlFzaFWENBt+R0U8jaWJ8mSvu84V17x0u8GJ3ywzk+CD41fgXv7QoxL3HURz0refqICf3wf614fJJM3elXS19w3opDL/Lw64Oh1YX70mnH7Cm0pW9x7GezrVjQNMnbAfOAYb+ZrtXAPcOtY0FG/pmD8sgD//gNHICf0I12VTGVZDSdNQaTAk=";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDit4wLCdPf4VqwdMrWrTXq9byekgw1Klqqkp2Q7kiPfqfwdRaEn3rgFnWrAQMqjZALimgBbk4uGL0gC0GS7V4mUrkiOUYcAQ/bn/ilTXEfyvBjgEhCgGlEBWtdcf+LU5CxdEkBPOzI8jRfdJFTTT/ir1NxDQ+TNDI/hDDs1XaIbWUeXBWsz/m0v9fzMGSaopWXaS50F1hDiaH7sSz2+GJoOMiy+CumPLoetIU/hOIlzeggBVNiaTGel134Qn7kbOGjGdUGvQJI45ZI46lGIcXw2s/fjmAdFTIUoHKK68EbbSWUfFgnKZDMl/FJ0oj2qikb/6R0Giau6He6uJhTk/4WSTK1IJxcZJytQxrthAVIurmq8Px6cRpzbGCp49fsJkr5symbyxUA+czoIWKx8VdloXhJAgmjYDr+kPEhZd+o++IOnWI//9UMSGPDDOP33u8+oN5MVGRD6ojgYfnq8nm1OyNu2bwnG6kfGbLQefGuO41KM0FMt2sM8WbnO2FzdJWKviHShGmkAtHsAeLmUUFT9K1I0dBmcbrk8XrM5Q8ku3";
     </script>
     
     <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
