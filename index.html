@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour de France: Efsanenin İzinde | Hazırlayan: Ümit Emre Erdoğan</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --tour-yellow: #F7E017;
+            --tour-blue: #002395;
+            --tour-red: #ED2939;
+            --text-dark: #1a1a1a;
+            --bg-light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .author-banner {
+            background: linear-gradient(135deg, var(--tour-blue), var(--tour-red));
+            color: white;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL3RvdXItZGUtZnJhbmNlLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6ODI4fX19') no-repeat center center/cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section-title {
+            border-left: 5px solid var(--tour-yellow);
+            padding-left: 15px;
+        }
+        
+        .fact-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .fact-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .icon-circle {
+            background-color: var(--tour-yellow);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        
+        .stage-table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .stage-table th {
+            background-color: var(--tour-blue);
+            color: white;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .jersey {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .yellow-jersey {
+            background-color: var(--tour-yellow);
+        }
+        
+        .green-jersey {
+            background-color: #1fa54b;
+        }
+        
+        .polka-jersey {
+            background-color: white;
+            background-image: radial-gradient(#ED2939 3px, transparent 4px);
+            background-size: 12px 12px;
+        }
+        
+        .white-jersey {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--tour-yellow);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid var(--tour-yellow);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid white;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid white;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+        
+        .right::after {
+            left: -13px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quote-block {
+            background-color: rgba(247, 224, 23, 0.1);
+            border-left: 5px solid var(--tour-yellow);
+        }
+        
+        .stat-highlight {
+            color: var(--tour-red);
+            font-weight: bold;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            
+            .left::after, .right::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+        }
+        
+        .thank-you-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL3RvdXItZGUtZnJhbmNlLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6ODI4fX19') no-repeat center center/cover;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="author-banner py-2 px-4 text-center">
+        <span class="font-bold">Hazırlayan: Ümit Emre Erdoğan</span>
+    </div>
+
+    <header class="hero-section">
+        <div class="container mx-auto text-center p-4">
+            <h1 class="text-5xl md:text-6xl mb-4 font-bold">Tour de France</h1>
+            <h2 class="text-2xl md:text-3xl mb-6">Efsanenin İzinde</h2>
+            <p class="text-xl">Bisiklet sporunu aşan bir fenomen, bir asırlık tutku ve dayanıklılık destanı</p>
+        </div>
+    </header>
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center py-4 overflow-x-auto whitespace-nowrap">
+                <a href="#giris" class="px-4 py-2 rounded hover:bg-gray-100">Giriş</a>
+                <a href="#tarihce" class="px-4 py-2 rounded hover:bg-gray-100">Tarihçe</a>
+                <a href="#buyukluk" class="px-4 py-2 rounded hover:bg-gray-100">Organizasyon Büyüklüğü</a>
+                <a href="#efsaneler" class="px-4 py-2 rounded hover:bg-gray-100">Efsanevi Bisikletçiler</a>
+                <a href="#efor" class="px-4 py-2 rounded hover:bg-gray-100">İnsanüstü Efor</a>
+                <a href="#tur2025" class="px-4 py-2 rounded hover:bg-gray-100">Tour 2025</a>
+                <a href="#taraftar" class="px-4 py-2 rounded hover:bg-gray-100">Taraftar Deneyimi</a>
+                <a href="#skandallar" class="px-4 py-2 rounded hover:bg-gray-100">Skandallar</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Giriş Bölümü -->
+        <section id="giris" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Bisiklet Sporunu Aşan Bir Efsane</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">
+                    27 Temmuz 2025, Tour de France'ın son günü. Paris'in ünlü Champs-Élysées bulvarında, sarı mayoyu giyen bir bisikletçi, insanüstü bir çaba sonucunda dünyanın en prestijli bisiklet yarışını tamamlamaya hazırlanıyor. Ancak Tour de France, sadece bir bisiklet yarışı değil; bir kültürel fenomen, bir dayanıklılık destanı, bir ulusal gurur kaynağı ve milyonlarca insanı bir araya getiren büyülü bir şölendir.
+                </p>
+                <p>
+                    Bu yazıda, yüz yılı aşkın tarihi boyunca Fransa'nın dağlarını, vadilerini ve ovalarını kaplayan bu muhteşem organizasyonu tüm yönleriyle keşfedeceğiz. Bisiklet sporunu bilmeseniz bile, Tour de France'ın neden dünyanın en büyük ve en zorlu spor etkinliklerinden biri olduğunu anlayacaksınız.
+                </p>
+            </div>
+        </section>
+
+        <!-- Tarihçe Bölümü -->
+        <section id="tarihce" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Bir Asırlık Macera</h2>
+            
+            <div class="timeline mb-8">
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1903 - İlk Tour de France</h3>
+                        <p>Fransız gazetesi L'Auto'nun satışlarını artırmak için düzenlenen ilk Tour de France'ı Maurice Garin kazandı. Altı etapta toplam 2,428 km pedal çevrilen yarışta, sadece 60 bisikletçi start aldı ve yalnızca 21'i bitiş çizgisini geçebildi.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1919 - Savaş Sonrası Diriliş</h3>
+                        <p>I. Dünya Savaşı'nın ardından Tour de France yeniden düzenlendi ve "Sarı Mayo" (Maillot Jaune) ilk kez Eugène Christophe tarafından giyildi. Bu mayo, yarışın lideri için bir sembol haline geldi.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1952 - Alpe d'Huez'in İlk Tırmanışı</h3>
+                        <p>Bugün Tour'un efsanevi tırmanışlarından biri olan Alpe d'Huez ilk kez rotaya dahil edildi. 21 virajlı ve 13.8 kilometrelik bu zorlu tırmanış, yarışın en ikonik noktalarından biri haline geldi.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1969-1974 - Merckx Dönemi</h3>
+                        <p>Belçikalı bisikletçi Eddy Merckx, beş kez Tour de France kazanarak bisiklet tarihinin en büyük sporcularından biri oldu. "Kannibaal" (Yamyam) lakaplı bisikletçi, üstün performansıyla rakiplerine şans tanımadı.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1989 - En Yakın Finiş</h3>
+                        <p>Yarışın tarihindeki en yakın bitiş: Greg LeMond, Laurent Fignon'u sadece 8 saniye farkla geçerek genel klasmanda lider oldu. 3,285 kilometrelik bir yarışta bu kadar küçük bir fark, hala bir rekor olarak duruyor.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">1998 - Festina Skandalı</h3>
+                        <p>Festina takımının masörünün arabasında doping maddeleri bulunmasıyla patlak veren skandal, bisiklet sporunda doping karşıtı mücadelenin dönüm noktası oldu. Tour de France'ın tarihindeki en büyük krizlerden biri yaşandı.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-bold mb-2">2020-2025 - Pogačar Çağı</h3>
+                        <p>Sloven bisikletçi Tadej Pogačar, 2020, 2021, 2024 ve 2025 yıllarında Tour de France'ı kazanarak modern bisikletin en büyük yıldızlarından biri haline geldi. Henüz 26 yaşında dört Tour zaferi kazanan Pogačar, tüm zamanların en başarılı bisikletçileri arasına adını yazdırdı.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p>
+                    Tour de France, 1903'ten bu yana bisiklet tutkunlarını büyülemeye devam ediyor. İlk yarıştan bu yana, iki dünya savaşı nedeniyle verilen aralar dışında her yıl düzenli olarak yapılan Tour de France, dünya sporunun en eski ve köklü organizasyonlarından biridir. Teknolojinin, bisiklet tasarımının ve spor biliminin gelişimiyle birlikte Tour de France da evrim geçirmiş, ancak asla özünü kaybetmemiştir: dayanıklılığın, stratejinin ve takım çalışmasının en üst düzeyde test edildiği üç haftalık bir mücadele.
+                </p>
+            </div>
+        </section>
+
+        <!-- Organizasyon Büyüklüğü Bölümü -->
+        <section id="buyukluk" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Devasa Bir Organizasyon</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="fact-card p-6 text-center">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">4,500+</h3>
+                    <p>Organizasyonda görev alan kişi sayısı (takımlar, medya, sponsorlar, güvenlik)</p>
+                </div>
+                
+                <div class="fact-card p-6 text-center">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">3,500 km</h3>
+                    <p>Ortalama kat edilen toplam yol (21 etapta yaklaşık 52,500 metre tırmanış)</p>
+                </div>
+                
+                <div class="fact-card p-6 text-center">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">12 Milyon</h3>
+                    <p>Yol kenarında yarışı canlı izleyen taraftar sayısı</p>
+                </div>
+                
+                <div class="fact-card p-6 text-center">
+                    <div class="icon-circle mx-auto">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">190 Ülke</h3>
+                    <p>Tour de France'ın televizyonda canlı yayınlandığı ülke sayısı</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Hareketli Bir Şehir</h3>
+                    <p class="mb-4">
+                        Tour de France, adeta hareket halinde bir şehir gibidir. 23 gün boyunca Fransa yollarında ilerleyen bu devasa organizasyon, muazzam bir lojistik operasyonu gerektirir.
+                    </p>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>23,000 polis ve jandarma görevlendirilir</li>
+                        <li>28,000 geçici trafik işareti yerleştirilir</li>
+                        <li>210+ otelde 40,000'den fazla konaklama rezervasyonu yapılır</li>
+                        <li>160 özel tasarımlı tanıtım aracı, 600 personelle 10-12 km'lik bir konvoy oluşturur</li>
+                        <li>Her bir bisikletçi için ortalama 5-6 bisiklet ve 20'den fazla jant hazır bulundurulur</li>
+                        <li>Takımların toplam bisiklet değeri 13 milyon Euro'yu aşar</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Tanıtım Karavanı</h3>
+                    <p class="mb-4">
+                        Tour de France'ın en renkli geleneklerinden biri, bisikletçilerden saatler önce yola çıkan tanıtım karavanıdır. Bu karavanın bazı ilginç istatistikleri:
+                    </p>
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>Tour boyunca seyircilere yaklaşık 16 milyon promosyon ürünü dağıtılır</li>
+                        <li>35+ marka her yıl karavanda yer alır</li>
+                        <li>Yaklaşık 12 milyon izleyici bu karavanı görmek için yol kenarına dizilir</li>
+                        <li>Karavanın bir etaptaki geçişi 30-45 dakika sürer</li>
+                        <li>Sponsorların karavanda yer almak için ödediği ücret 250.000 ile 600.000 Euro arasında değişir</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-bold mb-4">Medya Etkisi</h3>
+                <p class="mb-4">
+                    Tour de France, sadece bir spor etkinliği değil, aynı zamanda büyük bir medya fenomenidir:
+                </p>
+                <ul class="list-disc pl-5">
+                    <li>2,500 akredite gazeteci ve fotoğrafçı tur boyunca yarışı takip eder</li>
+                    <li>260 kamera operatörü (motosiklet, araba ve helikopterlerde) yarışı canlı görüntüler</li>
+                    <li>500+ teknisyen her gün bitiş çizgisinde teknik bölgede görev yapar</li>
+                    <li>Web sitesi yıllık 14.5 milyon benzersiz ziyaretçi çeker</li>
+                    <li>Sosyal medya platformlarında 13.7 milyon takipçisi bulunur</li>
+                    <li>Tour de France videoları 740 milyon izlenmeye ulaşır</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Efsanevi Bisikletçiler Bölümü -->
+        <section id="efsaneler" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Efsanevi Bisikletçiler</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Beş Kez Zafer Kazananlar</h3>
+                    <p class="mb-4">
+                        Tour de France tarihinde beş kez şampiyonluk kazanmış dört büyük isim, bisiklet tarihinin en büyük efsaneleri olarak kabul edilir:
+                    </p>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Eddy Merckx (Belçika)</h4>
+                        <p class="italic text-gray-600">1969, 1970, 1971, 1972, 1974</p>
+                        <p>
+                            "Kannibaal" (Yamyam) lakaplı Merckx, en çok etap kazanan bisikletçi unvanını (34) elinde tutuyor. Birçok uzman tarafından tüm zamanların en büyük bisikletçisi kabul edilir.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Jacques Anquetil (Fransa)</h4>
+                        <p class="italic text-gray-600">1957, 1961, 1962, 1963, 1964</p>
+                        <p>
+                            Tour de France'ı beş kez kazanan ilk bisikletçi. Özellikle zamana karşı etaplardaki üstünlüğüyle tanınırdı.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Bernard Hinault (Fransa)</h4>
+                        <p class="italic text-gray-600">1978, 1979, 1981, 1982, 1985</p>
+                        <p>
+                            "Le Blaireau" (Porsuk) lakaplı Hinault, sert karakteri ve liderlik özellikleriyle tanınırdı. 28 etap galibiyetiyle tüm zamanların en başarılı ikinci bisikletçisidir.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">Miguel Indurain (İspanya)</h4>
+                        <p class="italic text-gray-600">1991, 1992, 1993, 1994, 1995</p>
+                        <p>
+                            "Big Mig" olarak bilinen Indurain, beş kez üst üste Tour kazanan ilk ve tek bisikletçidir. Güçlü zamana karşı performansı ve dağlardaki savunma yeteneğiyle öne çıkardı.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Modern Dönemin Yıldızları</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Tadej Pogačar (Slovenya)</h4>
+                        <p class="italic text-gray-600">2020, 2021, 2024, 2025</p>
+                        <p>
+                            Henüz 26 yaşında dört Tour de France zaferine ulaşan Pogačar, bisiklet tarihinin en genç çoklu şampiyonlarından biridir. 2024'te Giro, Tour ve Dünya Şampiyonluğunu aynı yıl kazanarak bisikletin "Üçlü Tacı"na ulaşan nadir bisikletçilerden oldu.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Jonas Vingegaard (Danimarka)</h4>
+                        <p class="italic text-gray-600">2022, 2023</p>
+                        <p>
+                            Pogačar'ın en büyük rakibi olan Vingegaard, 2022 ve 2023'te art arda Tour de France zaferlerine ulaştı. Özellikle dağ etaplarındaki üstünlüğüyle tanınır.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">Mark Cavendish (Büyük Britanya)</h4>
+                        <p class="italic text-gray-600">34 Etap Galibiyeti</p>
+                        <p>
+                            "Manx Missile" (Man Adası Füzesi) lakaplı Cavendish, Eddy Merckx ile birlikte en çok etap kazanan bisikletçi rekorunu elinde tutuyor. Onun sprint finişleri Tour tarihinin en heyecanlı anlarını oluşturur.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+                <h3 class="text-2xl font-bold mb-4">Tour de France'ta Rekorlar</h3>
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-2 px-4 text-left">Rekor</th>
+                            <th class="py-2 px-4 text-left">Sahibi</th>
+                            <th class="py-2 px-4 text-left">İstatistik</th>
+                            <th class="py-2 px-4 text-left">Yıl</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En çok genel klasman zaferi</td>
+                            <td class="py-2 px-4 border-t">J. Anquetil, E. Merckx, B. Hinault, M. Indurain</td>
+                            <td class="py-2 px-4 border-t">5 zafer</td>
+                            <td class="py-2 px-4 border-t">Çeşitli</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En çok etap galibiyeti</td>
+                            <td class="py-2 px-4 border-t">Eddy Merckx ve Mark Cavendish</td>
+                            <td class="py-2 px-4 border-t">34 etap</td>
+                            <td class="py-2 px-4 border-t">Çeşitli</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En çok sarı mayo giyme</td>
+                            <td class="py-2 px-4 border-t">Eddy Merckx</td>
+                            <td class="py-2 px-4 border-t">96 gün</td>
+                            <td class="py-2 px-4 border-t">1969-1975</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En genç şampiyon</td>
+                            <td class="py-2 px-4 border-t">Henri Cornet</td>
+                            <td class="py-2 px-4 border-t">19 yaş 352 gün</td>
+                            <td class="py-2 px-4 border-t">1904</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En yaşlı şampiyon</td>
+                            <td class="py-2 px-4 border-t">Firmin Lambot</td>
+                            <td class="py-2 px-4 border-t">36 yaş 131 gün</td>
+                            <td class="py-2 px-4 border-t">1922</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En hızlı Tour de France</td>
+                            <td class="py-2 px-4 border-t">Jonas Vingegaard</td>
+                            <td class="py-2 px-4 border-t">42.155 km/h</td>
+                            <td class="py-2 px-4 border-t">2023</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En yakın zafer farkı</td>
+                            <td class="py-2 px-4 border-t">Greg LeMond</td>
+                            <td class="py-2 px-4 border-t">8 saniye</td>
+                            <td class="py-2 px-4 border-t">1989</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En çok yeşil mayo</td>
+                            <td class="py-2 px-4 border-t">Peter Sagan</td>
+                            <td class="py-2 px-4 border-t">7 kez</td>
+                            <td class="py-2 px-4 border-t">2012-2019</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">En çok puanlı mayo</td>
+                            <td class="py-2 px-4 border-t">Richard Virenque</td>
+                            <td class="py-2 px-4 border-t">7 kez</td>
+                            <td class="py-2 px-4 border-t">1994-2004</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-4 border-t">Alpe d'Huez'de en hızlı tırmanış</td>
+                            <td class="py-2 px-4 border-t">Marco Pantani</td>
+                            <td class="py-2 px-4 border-t">36:50</td>
+                            <td class="py-2 px-4 border-t">1997</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- İnsanüstü Efor Bölümü -->
+        <section id="efor" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">İnsanüstü Bir Efor</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Fiziksel Sınırları Zorlamak</h3>
+                    <p class="mb-4">
+                        Tour de France bisikletçileri, insan vücudunun sınırlarını zorlayan inanılmaz bir fiziksel efor sergilerler:
+                    </p>
+                    <ul class="list-disc pl-5">
+                        <li>Bir Tour de France şampiyonu, yarış boyunca ortalama <span class="stat-highlight">325 watt</span> güç üretir - bu, normal bir bisikletçinin sadece 20 dakika boyunca üretebileceği gücün üzerindedir.</li>
+                        <li>Bisikletçiler, tüm tur boyunca yaklaşık <span class="stat-highlight">120.000 kalori</span> yakarlar - bu, yaklaşık 210 Big Mac hamburgerin kalorisine eşdeğerdir.</li>
+                        <li>Dağ etaplarında, bisikletçiler kısa süreler için <span class="stat-highlight">1.000 watt</span> güce kadar çıkabilirler - bu, bir mikrodalga fırını çalıştırmaya yetecek güçtür.</li>
+                        <li>Sıcak bir günde bir bisikletçi, saatte <span class="stat-highlight">1,5 litre</span> ter atabilir.</li>
+                        <li>Yarışçılar ortalama <span class="stat-highlight">5-6 saat</span> pedal çevirirler ve günde ortalama <span class="stat-highlight">170 kilometre</span> yol katederler.</li>
+                        <li>Elit düzeyde bir bisikletçinin, kilo başına <span class="stat-highlight">6 watt</span> civarında güç üretebilmesi gerekir.</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Beslenme ve Hidrasyon</h3>
+                    <p class="mb-4">
+                        Bu kadar büyük bir efor, bisikletçilerin beslenme ve hidrasyonunu kritik hale getirir:
+                    </p>
+                    <ul class="list-disc pl-5">
+                        <li>Tüm bisikletçiler yarış boyunca yaklaşık <span class="stat-highlight">46.000 bidon</span> su tüketir.</li>
+                        <li>Bir dağ etabında tek bir bisikletçi <span class="stat-highlight">10-15 bidon</span> su içebilir.</li>
+                        <li>Yarışçılar tur boyunca yaklaşık <span class="stat-highlight">69.000 enerji barı ve 69.000 enerji jeli</span> tüketir.</li>
+                        <li>Bisikletçiler yarış esnasında sürekli beslenmek zorundadır - etaplar sırasında her saat <span class="stat-highlight">60-90 gram karbonhidrat</span> almaları gerekir.</li>
+                        <li>Büyük tırmanışlarda bir bisikletçi <span class="stat-highlight">8.000 kaloriye</span> kadar enerji harcayabilir - bu, normal bir yetişkinin üç günlük kalori ihtiyacına eşdeğerdir.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="height: 400px;" class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-2xl font-bold mb-4">Güç Dağılımı (Watt)</h3>
+                <canvas id="powerChart"></canvas>
+            </div>
+            
+            <div class="quote-block p-6 italic">
+                <p class="text-lg">
+                    "Tour de France'ta başarılı olmak için sadece güçlü bacaklara sahip olmak yetmez. Akıl, dayanıklılık, cesaret ve ekip çalışması, sarı mayoyu Paris'e taşımanın anahtarlarıdır."
+                </p>
+                <p class="text-right mt-2">- Bernard Hinault, beş kez Tour de France şampiyonu</p>
+            </div>
+        </section>
+
+        <!-- 2025 Tour Bölümü -->
+        <section id="tur2025" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Tour de France 2025</h2>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-2xl font-bold mb-4">Pogačar'ın Dördüncü Zaferi</h3>
+                <p class="mb-4">
+                    2025 Tour de France'ta Slovenya'nın yıldızı Tadej Pogačar (UAE Team Emirates-XRG), dördüncü Tour de France zaferini kutlamaya hazırlanıyor. 21 etaptan oluşan tur boyunca rakiplerini geride bırakmayı başaran 26 yaşındaki bisikletçi, Jonas Vingegaard'ı (Visma-Lease a Bike) 4 dakika 24 saniye farkla geride bıraktı.
+                </p>
+                <p class="mb-4">
+                    2020 ve 2021'deki ilk iki zaferinin ardından, 2022 ve 2023'te Vingegaard'a karşı şampiyonluğu kaybeden Pogačar, son iki yılda geri dönüşüyle kendini bisiklet tarihinin en büyükleri arasına soktu.
+                </p>
+                <p>
+                    "Bu yıl başka bir seviyedeydi. İlk günden sona kadar insanlar sürekli bana saldırdı, bu yüzden odaklanmak önemliydi" diyen Pogačar, artık Jacques Anquetil, Eddy Merckx, Bernard Hinault ve Miguel Indurain gibi beş kez şampiyonluk kazanmış efsanelere bir adım daha yaklaştı.
+                </p>
+            </div>
+            
+            <div class="stage-table mb-8">
+                <h3 class="text-2xl font-bold p-6">2025 Genel Klasman - Final Sıralama</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 text-left">Sıra</th>
+                                <th class="py-2 px-4 text-left">Bisikletçi</th>
+                                <th class="py-2 px-4 text-left">Ülke</th>
+                                <th class="py-2 px-4 text-left">Takım</th>
+                                <th class="py-2 px-4 text-left">Zaman</th>
+                                <th class="py-2 px-4 text-left">Fark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-t">1</td>
+                                <td class="py-2 px-4 border-t font-bold">Tadej Pogačar</td>
+                                <td class="py-2 px-4 border-t">Slovenya</td>
+                                <td class="py-2 px-4 border-t">UAE Team Emirates-XRG</td>
+                                <td class="py-2 px-4 border-t">69s 41d 46sn</td>
+                                <td class="py-2 px-4 border-t">-</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">2</td>
+                                <td class="py-2 px-4 border-t">Jonas Vingegaard</td>
+                                <td class="py-2 px-4 border-t">Danimarka</td>
+                                <td class="py-2 px-4 border-t">Visma-Lease a Bike</td>
+                                <td class="py-2 px-4 border-t">69s 46d 10sn</td>
+                                <td class="py-2 px-4 border-t">+4d 24sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">3</td>
+                                <td class="py-2 px-4 border-t">Florian Lipowitz</td>
+                                <td class="py-2 px-4 border-t">Almanya</td>
+                                <td class="py-2 px-4 border-t">Red Bull-Bora-Hansgrohe</td>
+                                <td class="py-2 px-4 border-t">69s 52d 55sn</td>
+                                <td class="py-2 px-4 border-t">+11d 09sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">4</td>
+                                <td class="py-2 px-4 border-t">Oscar Onley</td>
+                                <td class="py-2 px-4 border-t">Büyük Britanya</td>
+                                <td class="py-2 px-4 border-t">DSM-Firmenich PostNL</td>
+                                <td class="py-2 px-4 border-t">69s 53d 58sn</td>
+                                <td class="py-2 px-4 border-t">+12d 12sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">5</td>
+                                <td class="py-2 px-4 border-t">Felix Gall</td>
+                                <td class="py-2 px-4 border-t">Avusturya</td>
+                                <td class="py-2 px-4 border-t">Decathlon AG2R La Mondiale</td>
+                                <td class="py-2 px-4 border-t">69s 58d 58sn</td>
+                                <td class="py-2 px-4 border-t">+17d 12sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">6</td>
+                                <td class="py-2 px-4 border-t">Tobias Johannessen</td>
+                                <td class="py-2 px-4 border-t">Norveç</td>
+                                <td class="py-2 px-4 border-t">Uno-X Mobility</td>
+                                <td class="py-2 px-4 border-t">70s 02d 00sn</td>
+                                <td class="py-2 px-4 border-t">+20d 14sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">7</td>
+                                <td class="py-2 px-4 border-t">Kevin Vauquelin</td>
+                                <td class="py-2 px-4 border-t">Fransa</td>
+                                <td class="py-2 px-4 border-t">Arkéa-B&B Hotels</td>
+                                <td class="py-2 px-4 border-t">70s 04d 21sn</td>
+                                <td class="py-2 px-4 border-t">+22d 35sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">8</td>
+                                <td class="py-2 px-4 border-t">Primož Roglič</td>
+                                <td class="py-2 px-4 border-t">Slovenya</td>
+                                <td class="py-2 px-4 border-t">Red Bull-Bora-Hansgrohe</td>
+                                <td class="py-2 px-4 border-t">70s 07d 16sn</td>
+                                <td class="py-2 px-4 border-t">+25d 30sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">9</td>
+                                <td class="py-2 px-4 border-t">Ben Healy</td>
+                                <td class="py-2 px-4 border-t">İrlanda</td>
+                                <td class="py-2 px-4 border-t">EF Education-EasyPost</td>
+                                <td class="py-2 px-4 border-t">70s 09d 48sn</td>
+                                <td class="py-2 px-4 border-t">+28d 02sn</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-t">10</td>
+                                <td class="py-2 px-4 border-t">Jordan Jegat</td>
+                                <td class="py-2 px-4 border-t">Fransa</td>
+                                <td class="py-2 px-4 border-t">TotalEnergies</td>
+                                <td class="py-2 px-4 border-t">70s 14d 28sn</td>
+                                <td class="py-2 px-4 border-t">+32d 42sn</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">2025'in Önemli Anları</h3>
+                    <ul class="list-disc pl-5">
+                        <li><strong>Ben Healy'nin 6. Etap Zaferi:</strong> İrlandalı bisikletçi, 201 kilometrelik Bayeux-Vire etabında etkileyici bir solo atakla galibiyete ulaştı.</li>
+                        <li><strong>Healy'nin Sarı Mayosu:</strong> 10. etapta sarı mayoyu giyen Ben Healy, Stephen Roche'tan (1987) bu yana sarı mayo giyen ilk İrlandalı bisikletçi oldu.</li>
+                        <li><strong>Arensman'ın La Plagne Zaferi:</strong> 19. etapta Hollandalı Thymen Arensman (Ineos Grenadiers), son tırmanışta yaptığı atakla etap galibiyetini 2 saniye farkla kazandı.</li>
+                        <li><strong>Kaden Groves'un Solo Etap Galibiyeti:</strong> Avustralyalı sprinter, 20. etapta 130 kilometrelik bir kaçışın ardından etkileyici bir solo zafer kazandı ve üç büyük turda (Giro, Tour, Vuelta) etap kazanan bir bisikletçi oldu.</li>
+                        <li><strong>Pogačar'ın 100. Zaferi:</strong> Slovenya'lı yıldız, 4. etapta profesyonel kariyerinin 100. galibiyetini elde etti.</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Jersey Sahipleri</h3>
+                    
+                    <div class="flex items-center mb-6">
+                        <span class="jersey yellow-jersey"></span>
+                        <div>
+                            <p class="font-bold">Sarı Mayo (Genel Klasman)</p>
+                            <p>Tadej Pogačar (UAE Team Emirates-XRG)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mb-6">
+                        <span class="jersey green-jersey"></span>
+                        <div>
+                            <p class="font-bold">Yeşil Mayo (Puan Klasmanı)</p>
+                            <p>Jonathan Milan (Lidl-Trek)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mb-6">
+                        <span class="jersey polka-jersey"></span>
+                        <div>
+                            <p class="font-bold">Puanlı Mayo (Dağların Kralı)</p>
+                            <p>Tadej Pogačar (UAE Team Emirates-XRG)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="jersey white-jersey"></span>
+                        <div>
+                            <p class="font-bold">Beyaz Mayo (Genç Bisikletçi)</p>
+                            <p>Oscar Onley (DSM-Firmenich PostNL)</p>
+                            <p class="text-sm text-gray-600">Not: Remco Evenepoel yarışı terk etmişti.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Taraftar Deneyimi Bölümü -->
+        <section id="taraftar" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Eşsiz Taraftar Deneyimi</h2>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-2xl font-bold mb-4">Yol Kenarında Bir Festival</h3>
+                <p class="mb-4">
+                    Tour de France, yalnızca bir bisiklet yarışı değil, aynı zamanda üç hafta süren büyük bir festival gibidir. Her yıl yaklaşık 12 milyon seyirci, rotanın çeşitli noktalarında konumlanarak bu eşsiz deneyimi yaşamak ister.
+                </p>
+                <p class="mb-4">
+                    İzleyiciler genellikle 4-5 kişilik gruplar halinde gelir ve günde ortalama 7 saat boyunca yol kenarında beklerler. Bisikletçiler yalnızca birkaç saniye içinde geçip giderken, asıl deneyim bekleme süresi ve festivalin atmosferidir.
+                </p>
+                <p>
+                    Tour de France, ayrıca dünyanın en büyük ücretsiz spor etkinliklerinden biridir. İzleyicilerin çoğu, etap güzergâhında bir yer kapmak için saatlerce, hatta bazen günlerce önceden kamp kurar.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Efsanevi Taraftar Bölgeleri</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Alpe d'Huez'in Hollandalı Köşesi</h4>
+                        <p>
+                            Tour'un en ünlü taraftar noktalarından biri, Alpe d'Huez tırmanışının 7. virajında bulunan "Dutch Corner" (Hollandalı Köşesi) olarak bilinen bölgedir. Burada toplanan on binlerce turuncu giyimli Hollandalı taraftar, dağ etabını bir açık hava festivaline çevirir.
+                        </p>
+                        <p class="italic text-gray-600">
+                            "Bayrak ve müzik sesleri arasında bisiklet binmek, tamamen başka bir deneyim. Her şey o kadar duygu yüklü ki bunu hiçbir şeyle karşılaştıramam." - Tom Dumoulin
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">Col du Tourmalet</h4>
+                        <p>
+                            Pireneler'deki bu efsanevi tırmanış, genellikle binlerce taraftarla dolar. Geçmişte bisikletçilerin yolunu açmak için polis kordonları oluşturulması gerekecek kadar kalabalıklar oluşmuştur.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Renkli Taraftar Karakterleri</h3>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">El Diablo (Didi Senft)</h4>
+                        <p>
+                            Didi Senft adlı Alman taraftar, kırmızı şeytan kostümüyle tanınır ve yıllardır turun ikonik figürlerinden biridir. Büyük üç çatalı ve karakteristik dansıyla tanınır.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-bold text-blue-800">Kostümlü Taraftarlar</h4>
+                        <p>
+                            Tavuk kostümleri giyenlerden, çıplak koşanlara, traktörlerle şov yapanlardan Forrest Gump gibi pelotonun yanında koşanlara kadar çeşitli renkli taraftarlar her yıl Tour'a renk katar.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">Karavancılar</h4>
+                        <p>
+                            Birçok taraftar, en iyi seyir noktalarını yakalamak için günler öncesinden karavanlarıyla rota üzerinde kamp kurar. Özellikle dağ etaplarında, yollar karavanlarla dolar ve her viraj farklı bir ulustan taraftarların bölgesi haline gelir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quote-block p-6 italic">
+                <p class="text-lg">
+                    "Tour de France'ı gerçekten anlamak istiyorsanız, televizyonda izlemekle yetinemezsiniz. Zirveye tırmanmak için saatlerce yürümelisiniz, yağmurda ıslanmalısınız, günlerce çadırda kalmalısınız ve bisikletçiler geçerken onlara cesaret vermek için sesiniz kısılana kadar bağırmalısınız. İşte o zaman Tour'un gerçek ruhunu hissedersiniz."
+                </p>
+                <p class="text-right mt-2">- Harry Chemay, Avustralyalı bisiklet tutkunu</p>
+            </div>
+        </section>
+        
+        <!-- Skandallar Bölümü -->
+        <section id="skandallar" class="mb-16">
+            <h2 class="section-title text-3xl mb-6">Karanlık Sayfalar: Skandallar ve Tartışmalar</h2>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-2xl font-bold mb-4">Tour de France'ın Doping Tarihi</h3>
+                <p class="mb-4">
+                    Tour de France'ın görkemli tarihi kadar karanlık sayfaları da vardır. Yarışın ilk yıllarından itibaren doping ve skandallar hiç eksik olmamıştır. Bu skandallar, bisiklet sporunun imajına büyük darbe vurduysa da, son yıllarda antidoping kontrolleri ve bilinci artmış, spor daha temiz bir döneme girmiştir.
+                </p>
+                
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-blue-800">Erken Dönem Hileleri (1904)</h4>
+                    <p>
+                        Daha ikinci Tour de France'ta, ilk şampiyon Maurice Garin dahil olmak üzere ilk dört bitirici, tren kullanmak ve diğer hilelerle suçlanıp diskalifiye edildi. İlk şampiyonun diskalifiye edilmesi, yarışın daha en başında tartışmalı bir tarih yazmasına neden oldu.
+                    </p>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-blue-800">Tom Simpson Trajedisi (1967)</h4>
+                    <p>
+                        Britanyalı bisikletçi Tom Simpson, Mont Ventoux tırmanışı sırasında amfetamin, alkol ve sıcaklığın etkisiyle fenalaşıp hayatını kaybetti. Bu trajik olay, bisiklet dünyasının doping gerçeğiyle ciddi şekilde yüzleşmesine neden oldu.
+                    </p>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-blue-800">Festina Olayı (1998)</h4>
+                    <p>
+                        Festina takımının masörünün arabasında yakalanan büyük miktarda doping maddesi, turu derinden sarstı. Takım diskalifiye edildi ve birçok diğer takım da ya yarıştan çıkarıldı ya da kendileri çekildi. "Festina Affair" olarak bilinen bu skandal, modern bisiklet tarihindeki en büyük doping skandallarından biri olarak kabul edilir.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold text-blue-800">Lance Armstrong Skandalı</h4>
+                    <p>
+                        Yedi kez üst üste Tour şampiyonu olan Amerikalı bisikletçi Lance Armstrong, sistematik doping kullanımı nedeniyle tüm unvanlarından mahrum bırakıldı. 1999-2005 arasındaki yedi Tour de France zaferi resmi kayıtlardan silindi. Armstrong, önceleri iddiaları reddettiyse de, sonunda Oprah Winfrey ile yaptığı röportajda doping kullandığını itiraf etti.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Diğer Önemli Skandallar</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-bold text-blue-800">Floyd Landis (2006)</h4>
+                        <p>
+                            2006 Tour de France şampiyonu Floyd Landis, yarıştan sonra yapılan testlerde testosteron seviyelerinin yüksek çıkması nedeniyle unvanından oldu. İlk başta suçlamaları reddeden Landis, sonradan sadece bu yarışta değil, kariyeri boyunca doping kullandığını itiraf etti.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-bold text-blue-800">Michael Rasmussen Olayı (2007)</h4>
+                        <p>
+                            2007 Tour'unda sarı mayoyu taşıyan Danimarkalı Michael Rasmussen, yarışma öncesindeki testlere katılmaktan kaçındığı gerekçesiyle kendi takımı tarafından yarıştan çıkarıldı. Bu olay, doping kontrol sisteminin önemini bir kez daha gözler önüne serdi.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">2021 Seyirci Kazası</h4>
+                        <p>
+                            2021 Tour'unun ilk etabında, bir seyirci elinde tuttuğu kartonla televizyona çıkmaya çalışırken Alman bisikletçi Tony Martin'e çarptı. Bu kaza büyük bir peloton düşüşüne neden oldu. "Turdaki en kötü kaza" olarak nitelendirilen olayın ardından seyirci tutuklandı ve 1.200 euro para cezasına çarptırıldı.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Turdaki Diğer İlginç Olaylar</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-bold text-blue-800">Eddy Merckx'e Yumruk (1975)</h4>
+                        <p>
+                            Beş kez Tour de France şampiyonu Eddy Merckx, 1975'te bir taraftar tarafından yumruklandı. Saldırının ardından nefes almakta zorlanan Merckx etabı tamamladı, ancak bu olay onun altıncı zaferini kazanmasını engelledi.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-xl font-bold text-blue-800">Chaingate (2010)</h4>
+                        <p>
+                            2010 Tour'unda Andy Schleck'in bisikletinin zinciri düştü ve rakibi Alberto Contador bu durumdan yararlanıp öne geçti. Bu, bisiklet sporunda rakibin mekanik sorunlarından yararlanılmaması gerektiğine dair yazılı olmayan kuralı ihlal ettiği gerekçesiyle tartışmalara yol açtı.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-800">TV Arabası Kazası (2011)</h4>
+                        <p>
+                            2011'in 9. etabında bir televizyon arabası, kaçış grubundaki Juan Antonio Flecha ve Johnny Hoogerland'e çarptı. İki bisikletçi de ciddi şekilde yaralandı, özellikle Hoogerland bir çite uçarak korkunç yaralar aldı. Buna rağmen her iki bisikletçi de etabı tamamlamayı başardı.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Teşekkür Bölümü -->
+        <section id="tesekkur" class="thank-you-section p-12 text-center rounded-lg mb-8">
+            <h2 class="text-3xl font-bold mb-6">Tura Teşekkür</h2>
+            <p class="text-xl mb-6 max-w-3xl mx-auto">
+                Alpler'in zirvelerinde doğan şafak, Pireneler'in sarp yamaçlarında batan güneş, Paris'in altın ışıltısına doğru uzanan yollar... İyisiyle kötüsüyle, acısıyla tatlısıyla, düşüyle kalkışıyla, bir asrı aşkın zamandır ruhlarımıza dokunan bu efsaneye teşekkürler. Bisikletin ötesinde, dayanıklılığın, cesaretin ve tutkunun şiirine teşekkürler. Vive le Tour!
+            </p>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="font-bold text-lg">Tour de France: Efsanenin İzinde</p>
+                    <p>&copy; 2025 Hazırlayan: Ümit Emre Erdoğan</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="hover:text-yellow-400"><i class="fab fa-youtube fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Güç Dağılımı Grafiği
+        const ctx = document.getElementById('powerChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Sprint (10sn)', 'Anaerobik (1dk)', 'VO2 Max (5dk)', 'FTP (1 saat)', 'Ortalama (Etap)'],
+                datasets: [{
+                    label: 'Tour Bisikletçisi (watt)',
+                    data: [1600, 800, 500, 400, 325],
+                    backgroundColor: '#002395',
+                    borderColor: '#002395',
+                    borderWidth: 1
+                }, {
+                    label: 'Amatör Bisikletçi (watt)',
+                    data: [900, 450, 320, 250, 170],
+                    backgroundColor: '#ED2939',
+                    borderColor: '#ED2939',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Güç (watt)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Efor Tipi ve Süresi'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDr%2BHpCBvLkBUZHewvu5ZnbTfxfUyzsUZSHZE%2BJfEj8cvNM6Xcl0iJUP%2FWlQ7mNV%2Bg2rirAPUszGhVEueYHSxhgO9qgB9nEsfJL5qS1AaHobEetlGJ1mfg5IpAuk2QzDBLKymZqUJdkRfXy0vjwFuEnD44r9w5VZFBIh5PWpnKWAuopMhVIiAymuZN3mnYrWYm4xhEOcfSOFc8t46a3C6jEWu89NB5GIMXnK8POv%2FLRZOtHVSI%2BTs7KI7HD79mW3Oz0WgOW9bDM5c8q%2FVeF%2Fsy6QE2nfHUtDOVqrL8p6W41bNO7aX34SziV4WdqH5ZZ15Wj%2B83aSC5lvkyWcv8x5XjLzcbLZNrVJk78VRlFzaFWENBt%2BR0U8jaWJ8mSvu84V17x0u8GJ3ywzk%2BCD41fgXv7QoxL3HURz0refqICf3wf614fJJM3elXS19w3opDL%2FLw64Oh1YX70mnH7Cm0pW9x7GezrVjQNMnbAfOAYb%2BZrtXAPcOtY0FG%2FpmD8sgD%2F%2FgNHICf0I12VTGVZDSdNQaTAk%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDr+HpCBvLkBUZHewvu5ZnbTfxfUyzsUZSHZE+JfEj8cvNM6Xcl0iJUP/WlQ7mNV+g2rirAPUszGhVEueYHSxhgO9qgB9nEsfJL5qS1AaHobEetlGJ1mfg5IpAuk2QzDBLKymZqUJdkRfXy0vjwFuEnD44r9w5VZFBIh5PWpnKWAuopMhVIiAymuZN3mnYrWYm4xhEOcfSOFc8t46a3C6jEWu89NB5GIMXnK8POv/LRZOtHVSI+Ts7KI7HD79mW3Oz0WgOW9bDM5c8q/VeF/sy6QE2nfHUtDOVqrL8p6W41bNO7aX34SziV4WdqH5ZZ15Wj+83aSC5lvkyWcv8x5XjLzcbLZNrVJk78VRlFzaFWENBt+R0U8jaWJ8mSvu84V17x0u8GJ3ywzk+CD41fgXv7QoxL3HURz0refqICf3wf614fJJM3elXS19w3opDL/Lw64Oh1YX70mnH7Cm0pW9x7GezrVjQNMnbAfOAYb+ZrtXAPcOtY0FG/pmD8sgD//gNHICf0I12VTGVZDSdNQaTAk=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
